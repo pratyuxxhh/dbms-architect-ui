@@ -19,7 +19,7 @@ export default function GenerateSchemaCard() {
     if (!trimmedPrompt) {
       return
     }
-
+    console.log('Generating schema with prompt:', trimmedPrompt)
     navigate('/generating-schema', {
       state: {
         prompt: trimmedPrompt,

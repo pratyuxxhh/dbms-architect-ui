@@ -44,14 +44,39 @@ export default function LoginCard() {
   }
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    if (!validate()) return
+  event.preventDefault();
 
-    setLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1200))
-    console.log('Form submitted:', form)
-    setLoading(false)
+  if (!validate()) return;
+
+  setLoading(true);
+
+  try {
+    const response = await fetch("http://localhost:8080/public/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    console.log("Success:", data);
+
+    // Navigate to login page or dashboard
+    // navigate("/login");
+
+  } catch (err) {
+    console.error(err);
+    // Show error toast/message
+  } finally {
+    setLoading(false);
   }
+};
 
   return (
     <Card
