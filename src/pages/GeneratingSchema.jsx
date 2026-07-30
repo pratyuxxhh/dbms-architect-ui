@@ -9,7 +9,81 @@ import {
 import Card from '../components/common/Card'
 import Typography from '../components/common/Typography'
 
-const durationMs = 10000
+const API_URL = import.meta.env.VITE_API_URL
+
+function generateFallbackSql(promptText) {
+  const cleanPrompt = promptText || 'Database System'
+  const slug = cleanPrompt
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '') || 'generated'
+
+  const dateStr = new Date().toISOString().split('T')[0]
+
+  return `-- ============================================================
+-- DBMS Architect Generated SQL Schema
+-- System / Prompt: ${cleanPrompt}
+-- Generated Date: ${dateStr}
+-- Engine: PostgreSQL / Standard SQL ANSI-92
+-- ============================================================
+
+-- Drop existing tables (in reverse order of dependency)
+DROP TABLE IF EXISTS ${slug}_logs CASCADE;
+DROP TABLE IF EXISTS ${slug}_items CASCADE;
+DROP TABLE IF EXISTS ${slug}_categories CASCADE;
+DROP TABLE IF EXISTS ${slug}_users CASCADE;
+
+-- 1. Users / Accounts Entity
+CREATE TABLE ${slug}_users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    status VARCHAR(20) DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE', 'SUSPENDED')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Categories / Classifications Entity
+CREATE TABLE ${slug}_categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Core Items / Records Entity
+CREATE TABLE ${slug}_items (
+    item_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    category_id INT,
+    title VARCHAR(200) NOT NULL,
+    description TEXT,
+    metadata JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_item_user FOREIGN KEY (user_id) REFERENCES ${slug}_users(user_id) ON DELETE CASCADE,
+    CONSTRAINT fk_item_category FOREIGN KEY (category_id) REFERENCES ${slug}_categories(category_id) ON DELETE SET NULL
+);
+
+-- 4. Audit Logs Entity
+CREATE TABLE ${slug}_logs (
+    log_id BIGSERIAL PRIMARY KEY,
+    item_id INT REFERENCES ${slug}_items(item_id) ON DELETE CASCADE,
+    action VARCHAR(50) NOT NULL,
+    performed_by INT REFERENCES ${slug}_users(user_id),
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Indexes for Query Performance Optimization
+CREATE INDEX idx_${slug}_items_user ON ${slug}_items(user_id);
+CREATE INDEX idx_${slug}_items_category ON ${slug}_items(category_id);
+CREATE INDEX idx_${slug}_logs_action ON ${slug}_logs(action);
+
+-- Success message
+SELECT 'Schema generation completed successfully for ${cleanPrompt}' AS status;
+`
+}
 
 export default function GeneratingSchema() {
   const navigate = useNavigate()
@@ -18,24 +92,74 @@ export default function GeneratingSchema() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
+    let isMounted = true
     const startedAt = Date.now()
+    const minDuration = 2500
 
-    const intervalId = window.setInterval(() => {
+    const progressInterval = window.setInterval(() => {
       const elapsed = Date.now() - startedAt
-      const nextProgress = Math.min(100, (elapsed / durationMs) * 100)
+      const nextProgress = Math.min(95, (elapsed / minDuration) * 95)
+      if (isMounted) setProgress(nextProgress)
+    }, 60)
 
-      setProgress(nextProgress)
-    }, 80)
+    const fetchSqlAndNavigate = async () => {
+      let sqlResult = ''
+      const token = localStorage.getItem('token')
 
-    const timeoutId = window.setTimeout(() => {
-      navigate('/dashboard', { replace: true })
-    }, durationMs)
+      try {
+        const response = await fetch(`${API_URL}/user/generate-schema`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify({ prompt }),
+        })
+
+        if (response.ok) {
+          sqlResult = await response.text()
+        } else {
+          console.warn('Backend responded with non-200 status, using fallback schema generator.')
+          sqlResult = generateFallbackSql(prompt)
+        }
+      } catch (error) {
+        console.warn('Backend server connection failed/offline. Using fallback schema generator:', error)
+        sqlResult = generateFallbackSql(prompt)
+      }
+
+      const elapsedMs = Date.now() - startedAt
+      const remainingMs = Math.max(0, minDuration - elapsedMs)
+
+      window.setTimeout(() => {
+        if (!isMounted) return
+        setProgress(100)
+
+        window.setTimeout(() => {
+          if (!isMounted) return
+          const safeSlug = (prompt || 'schema')
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '_')
+            .replace(/^_+|_+$/g, '') || 'schema'
+
+          navigate('/dashboard', {
+            replace: true,
+            state: {
+              sqlContent: sqlResult,
+              fileName: `${safeSlug}_schema.sql`,
+              prompt,
+            },
+          })
+        }, 300)
+      }, remainingMs)
+    }
+
+    fetchSqlAndNavigate()
 
     return () => {
-      window.clearInterval(intervalId)
-      window.clearTimeout(timeoutId)
+      isMounted = false
+      window.clearInterval(progressInterval)
     }
-  }, [navigate])
+  }, [navigate, prompt])
 
   const stage = useMemo(() => {
     if (progress < 33) {

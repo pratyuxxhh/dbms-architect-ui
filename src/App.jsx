@@ -18,13 +18,18 @@ function AppShell() {
       return undefined
     }
 
-    setToastMessage(message)
+    const showTimer = window.setTimeout(() => {
+      setToastMessage(message)
+    }, 0)
 
-    const timer = window.setTimeout(() => {
+    const clearTimer = window.setTimeout(() => {
       setToastMessage('')
     }, 3000)
 
-    return () => window.clearTimeout(timer)
+    return () => {
+      window.clearTimeout(showTimer)
+      window.clearTimeout(clearTimer)
+    }
   }, [location.state])
 
   return (
