@@ -1,9 +1,9 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import Card from '../components/common/Card'
 import PromptInput from '../components/dashboard/PromptInput'
 import SQLDownloadCard from '../components/dashboard/SQLDownloadCard'
-import AlertMessage from '../components/dashboard/AlertMessage'
 import { extractFilename } from '../utils/filenameExtractor'
 
 const API_URL = import.meta.env.VITE_API_URL
@@ -13,16 +13,12 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false)
   const [blob, setBlob] = useState(null)
   const [filename, setFilename] = useState('')
-  const [error, setError] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
 
   const handleGenerateSQL = async () => {
     const trimmedPrompt = prompt.trim()
     if (!trimmedPrompt || loading) return
 
     setLoading(true)
-    setError('')
-    setSuccessMessage('')
     setBlob(null)
     setFilename('')
 
@@ -48,18 +44,22 @@ export default function Dashboard() {
 
         setBlob(fileBlob)
         setFilename(extractedName)
-        setSuccessMessage('SQL file generated successfully.')
+        toast.success('SQL file generated successfully.')
       } else if (response.status === 400) {
         const bodyText = await response.text()
-        setError(bodyText || 'The request is invalid. No SQL schema could be generated.')
+        toast.error(bodyText || 'The request is invalid. No SQL schema could be generated.')
       } else if (response.status === 404) {
-        setError('Generated file not found.')
+        toast.error('Generated file not found.')
       } else {
-        setError('Something went wrong. Please try again.')
+        toast.error('Something went wrong. Please try again.')
       }
     } catch (err) {
       console.error('Failed to generate SQL schema:', err)
-      setError('Something went wrong. Please try again.')
+      const errorMessage =
+        err instanceof TypeError && err.message.includes('Failed to fetch')
+          ? 'Connection refused. Please try again after some time.'
+          : 'Something went wrong. Please try again.'
+      toast.error(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -75,23 +75,6 @@ export default function Dashboard() {
             onSubmit={handleGenerateSQL}
             loading={loading}
           />
-
-          {error && (
-            <AlertMessage
-              type="error"
-              message={error}
-              onClose={() => setError('')}
-            />
-          )}
-
-          {successMessage && (
-            <AlertMessage
-              type="success"
-              message={successMessage}
-              onClose={() => setSuccessMessage('')}
-            />
-          )}
-
           <SQLDownloadCard blob={blob} filename={filename} />
         </Card>
       </section>

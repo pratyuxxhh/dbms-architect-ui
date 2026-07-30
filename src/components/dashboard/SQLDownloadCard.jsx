@@ -7,14 +7,14 @@ export default function SQLDownloadCard({ blob, filename = 'database_schema.sql'
   const fileSizeKb = blob ? (blob.size / 1024).toFixed(2) : null
 
   return (
-    <div className="rounded-2xl border border-primary/10 bg-background/60 p-5 shadow-sm space-y-4">
+    <div className="rounded-2xl border border-primary/20 bg-background/80 p-5 shadow-lg shadow-primary/5 space-y-4 transition-all hover:border-primary/30 group">
       <div className="flex items-center justify-between border-b border-primary/10 pb-3">
-        <Typography as="h3" variant="h3" className="text-base font-semibold">
+        <Typography as="h3" variant="h3" className="text-base font-bold text-primary group-hover:text-amber-700 transition-colors">
           Generated File
         </Typography>
         {hasFile && (
-          <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-            Ready
+          <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-3 py-1 text-[11px] font-bold tracking-wide uppercase text-emerald-700 border border-emerald-500/30">
+            Ready for Download
           </span>
         )}
       </div>

@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { FcGoogle } from 'react-icons/fc'
-import { FaGithub } from 'react-icons/fa'
+import { toast } from 'react-toastify'
 import Card from '../common/Card'
 import Button from '../common/Button'
 import AuthHeader from './AuthHeader'
 import InputField from './InputField'
-import Divider from './Divider'
-import SocialButton from './SocialButton'
 import {
   validatePassword,
   validateRequired,
@@ -100,16 +97,18 @@ export default function SignupCard() {
         throw new Error(responseMessage || 'Something went wrong')
       }
 
+      toast.success(responseMessage)
       navigate('/login', {
         replace: true,
-        state: {
-          toastMessage: responseMessage,
-        },
       })
     } catch (err) {
-      setErrors({
-        submit: err instanceof Error ? err.message : 'Something went wrong',
-      })
+      const errorMessage =
+        err instanceof TypeError && err.message.includes('Failed to fetch')
+          ? 'Connection refused. Please try again after some time.'
+          : err instanceof Error
+          ? err.message
+          : 'Something went wrong'
+      toast.error(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -118,62 +117,56 @@ export default function SignupCard() {
   return (
     <Card
       padding="md"
-      className="animate-slide-up w-full max-w-107.5 px-6 py-8 sm:px-10 sm:py-10"
+      className="animate-slide-up w-full max-w-115 rounded-[28px] border border-primary/20 bg-surface/90 px-6 py-6 shadow-2xl shadow-primary/10 backdrop-blur-xl sm:px-8 sm:py-7 transition-all hover:border-primary/30"
     >
       <AuthHeader
         title="Create Your Account"
-        subtitle="Join DBMS Architect to design, document, and manage your data systems."
+        subtitle="Join DBMS Architect to design and manage database systems."
       />
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate>
-        {errors.submit && (
-          <div
-            className="rounded-2xl border border-primary/10 bg-primary/5 px-4 py-3 text-sm text-primary"
-            role="alert"
-          >
-            {errors.submit}
-          </div>
-        )}
-
+      <form onSubmit={handleSubmit} className="mt-5 space-y-3.5" noValidate>
         <InputField
           label="Username"
           name="username"
           type="text"
-          placeholder="Enter your username, something unique"
+          placeholder="Enter a unique username"
           value={form.username}
           onChange={handleChange('username')}
           error={errors.username}
           required
           autoComplete="username"
         />
-        <InputField
-          label="FirstName"
-          name="firstName"
-          type="text"
-          placeholder="Enter your first name"
-          value={form.firstName}
-          onChange={handleChange('firstName')}
-          error={errors.firstName}
-          required
-          autoComplete="given-name"
-        />
-        <InputField
-          label="LastName"
-          name="lastName"
-          type="text"
-          placeholder="Enter your last name"
-          value={form.lastName}
-          onChange={handleChange('lastName')}
-          error={errors.lastName}
-          required
-          autoComplete="family-name"
-        />
-        
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <InputField
+            label="First Name"
+            name="firstName"
+            type="text"
+            placeholder="First name"
+            value={form.firstName}
+            onChange={handleChange('firstName')}
+            error={errors.firstName}
+            required
+            autoComplete="given-name"
+          />
+          <InputField
+            label="Last Name"
+            name="lastName"
+            type="text"
+            placeholder="Last name"
+            value={form.lastName}
+            onChange={handleChange('lastName')}
+            error={errors.lastName}
+            required
+            autoComplete="family-name"
+          />
+        </div>
+
         <InputField
           label="Password"
           name="password"
           type="password"
-          placeholder="Create a password"
+          placeholder="Create a strong password"
           value={form.password}
           onChange={handleChange('password')}
           error={errors.password}
@@ -199,31 +192,17 @@ export default function SignupCard() {
           fullWidth
           loading={loading}
           disabled={loading}
+          className="h-11 text-base font-bold shadow-lg shadow-primary/10 hover:shadow-xl hover:-translate-y-0.5 transition-all mt-1"
         >
           Sign Up
         </Button>
       </form>
 
-      <div className="mt-6">
-        <Divider text="OR SIGN UP WITH" />
-      </div>
-
-      <div className="mt-6 flex gap-4">
-        <SocialButton
-          label="Google"
-          icon={<FcGoogle className="h-5 w-5" aria-hidden="true" />}
-        />
-        <SocialButton
-          label="GitHub"
-          icon={<FaGithub className="h-5 w-5 text-primary" aria-hidden="true" />}
-        />
-      </div>
-
-      <p className="mt-8 text-center text-base text-secondary">
+      <p className="mt-5 text-center text-sm text-secondary">
         Already have an account?{' '}
         <Link
           to="/login"
-          className="font-semibold text-primary transition-colors duration-250 hover:text-primary/80"
+          className="font-bold text-primary underline underline-offset-4 transition-colors duration-250 hover:text-amber-600"
         >
           Login
         </Link>

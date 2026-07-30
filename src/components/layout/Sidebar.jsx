@@ -49,20 +49,20 @@ export default function Sidebar({ isOpen, onClose }) {
 
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 flex w-65 flex-col border-r border-primary/10 bg-surface/95 px-4 py-5 shadow-xl shadow-primary/5 transition-transform duration-250 ease-out backdrop-blur-xl overflow-y-auto',
+          'fixed inset-y-0 left-0 z-40 flex w-65 flex-col border-r border-primary/20 bg-surface/80 px-5 py-6 shadow-2xl shadow-primary/10 transition-transform duration-250 ease-out backdrop-blur-2xl overflow-y-auto',
           isOpen ? 'translate-x-0' : '-translate-x-full',
           'lg:translate-x-0'
         )}
         aria-label="Sidebar"
       >
-        <div className="flex items-center justify-between gap-3 pb-6 lg:pb-4">
-          <Link to="/dashboard" className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-[18px] bg-background shadow-sm shadow-primary/8">
-              <RiDatabase2Line className="h-6 w-6 text-primary" aria-hidden="true" />
+        <div className="flex items-center justify-between gap-3 pb-8 lg:pb-6">
+          <Link to="/dashboard" className="flex items-center gap-3 group">
+            <div className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-primary shadow-md shadow-primary/20 group-hover:scale-105 transition-transform">
+              <RiDatabase2Line className="h-6 w-6 text-amber-300" aria-hidden="true" />
             </div>
             <div className="leading-tight">
-              <p className="text-base font-semibold text-primary">DBMS Architect</p>
-              <p className="text-sm text-secondary">Schema generation studio</p>
+              <p className="text-[17px] font-extrabold text-primary tracking-tight">DBMS Architect</p>
+              <p className="text-[11px] font-medium font-mono text-secondary">AI Schema Studio</p>
             </div>
           </Link>
 

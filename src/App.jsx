@@ -7,43 +7,24 @@ import Dashboard from './pages/Dashboard'
 import GeneratingSchema from './pages/GeneratingSchema'
 import ProtectedRoute from './ProtectedRoute'
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 function AppShell() {
-  const location = useLocation()
-  const [toastMessage, setToastMessage] = useState('')
-
-  useEffect(() => {
-    const message = location.state?.toastMessage
-
-    if (!message) {
-      return undefined
-    }
-
-    const showTimer = window.setTimeout(() => {
-      setToastMessage(message)
-    }, 0)
-
-    const clearTimer = window.setTimeout(() => {
-      setToastMessage('')
-    }, 3000)
-
-    return () => {
-      window.clearTimeout(showTimer)
-      window.clearTimeout(clearTimer)
-    }
-  }, [location.state])
-
   return (
     <>
-      {toastMessage && (
-        <div
-          className="fixed left-1/2 top-6 z-50 w-[min(92vw,420px)] -translate-x-1/2 rounded-2xl border border-primary/10 bg-surface/95 px-4 py-3 text-sm font-medium text-primary shadow-xl shadow-primary/10 backdrop-blur"
-          role="status"
-          aria-live="polite"
-        >
-          {toastMessage}
-        </div>
-      )}
-
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/landing" element={<Landing />} />

@@ -192,68 +192,76 @@ export default function GeneratingSchema() {
   ]
 
   return (
-    <main className="relative flex min-h-screen overflow-hidden bg-[#F6EFCF] text-[#5B563E]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.55),transparent_45%),radial-gradient(circle_at_center,rgba(227,215,158,0.45),transparent_60%)]" />
-      <div className="absolute left-10 top-10 h-56 w-56 rounded-full bg-white/35 blur-3xl" />
-      <div className="absolute -right-12 top-1/3 h-64 w-64 rounded-full bg-[#E5D89F]/30 blur-3xl" />
+    <main className="relative flex min-h-screen overflow-hidden bg-background text-primary">
+      <div className="absolute inset-0 bg-grid-pattern opacity-40" />
+      <div className="absolute left-1/2 top-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-400/20 blur-[120px] pointer-events-none" />
 
       <section className="relative z-10 mx-auto flex w-full max-w-5xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-4xl rounded-[34px] border-[#DDD2A6]/70 bg-[#EFE4B7]/75 px-5 py-8 shadow-[0_30px_80px_rgba(102,92,43,0.12)] backdrop-blur-sm sm:px-8 sm:py-12 lg:px-12">
+        <Card className="w-full max-w-4xl rounded-[34px] border border-primary/20 bg-surface/80 px-5 py-12 shadow-2xl shadow-primary/10 backdrop-blur-xl sm:px-12 sm:py-16">
           <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-            <div className="flex h-24 w-24 items-center justify-center rounded-full border border-[#DDD2A6] bg-[#F7F0CF] shadow-[0_0_0_12px_rgba(255,255,255,0.18)]">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#D8CCA0] bg-[#F8F1D0]">
-                <HiOutlineCircleStack className="h-8 w-8 text-[#5B563E]" aria-hidden="true" />
+            
+            {/* Pulsing AI Brain Icon */}
+            <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-primary/20 bg-background shadow-lg">
+              <div className="absolute inset-0 rounded-full border border-amber-400/50 animate-ping opacity-20" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+                <HiOutlineSparkles className="h-8 w-8 text-amber-500 animate-pulse" aria-hidden="true" />
               </div>
             </div>
 
-            <Typography as="h1" variant="h2" className="mt-8 max-w-2xl text-[#5B563E] sm:text-[2.15rem]">
+            <Typography as="h1" variant="h2" className="mt-10 max-w-2xl font-extrabold text-primary sm:text-4xl tracking-tight">
               Generating Your Database Schema...
             </Typography>
 
-            <Typography as="p" variant="muted" className="mt-3 max-w-2xl text-[#8A825E] sm:text-[1rem]">
+            <Typography as="p" variant="muted" className="mt-4 max-w-2xl text-lg text-secondary">
               Crafting a normalized, scalable structure with relationships, keys, and optimized SQL output.
             </Typography>
 
-            {prompt ? (
-              <div className="mt-4 max-w-2xl rounded-full border border-[#DDD2A6]/80 bg-white/35 px-5 py-3 text-sm text-[#6B6548] shadow-sm">
-                <span className="font-medium">Prompt:</span> {prompt}
+            {prompt && (
+              <div className="mt-8 max-w-2xl rounded-2xl border border-primary/15 bg-background/50 px-6 py-4 text-sm text-primary/80 shadow-inner font-mono relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-amber-400" />
+                <span className="font-bold text-amber-600 block mb-1">PROMPT INGESTED</span>
+                <span className="text-xs">"{prompt}"</span>
               </div>
-            ) : null}
+            )}
 
-            <div className="mt-8 w-full max-w-2xl">
-              <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.4em] text-[#8A825E]">
-                <span>Preparing schema</span>
-                <span>{Math.round(progress)}%</span>
+            <div className="mt-10 w-full max-w-2xl">
+              <div className="flex items-center justify-between text-xs font-mono uppercase tracking-widest text-primary/70 mb-3">
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  {stage}
+                </span>
+                <span className="font-bold text-primary">{Math.round(progress)}%</span>
               </div>
-              <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#FBF7E4] shadow-inner shadow-[#B5A66A]/10">
+              <div className="h-3 w-full overflow-hidden rounded-full bg-background border border-primary/10 shadow-inner">
                 <div
-                  className="h-full rounded-full bg-linear-to-r from-[#A8995E] via-[#7F7350] to-[#63593F] transition-[width] duration-100 ease-linear"
+                  className="h-full rounded-full bg-gradient-to-r from-amber-600 via-amber-400 to-amber-300 transition-[width] duration-100 ease-linear relative overflow-hidden"
                   style={{ width: `${progress}%` }}
-                />
+                >
+                  <div className="absolute inset-0 bg-white/20 w-full h-full animate-[slide-right_2s_infinite]" />
+                </div>
               </div>
             </div>
 
-            <div className="mt-7 inline-flex items-center gap-2 rounded-full bg-white/45 px-5 py-3 text-sm font-medium text-[#5B563E] shadow-sm backdrop-blur-sm">
-              <HiOutlineSparkles className="h-4 w-4" aria-hidden="true" />
-              {stage}
-            </div>
-
-            <div className="mt-10 grid w-full gap-4 md:grid-cols-3">
-              {loadingCards.map((card) => {
+            <div className="mt-14 grid w-full gap-6 md:grid-cols-3">
+              {loadingCards.map((card, idx) => {
                 const Icon = card.icon
+                // Staggered fade in based on progress
+                const isVisible = progress > (idx * 30)
 
                 return (
                   <div
                     key={card.title}
-                    className="rounded-2xl border border-[#DDD2A6]/75 bg-white/35 p-4 text-left shadow-sm backdrop-blur-sm"
+                    className={`rounded-2xl border border-primary/15 bg-background/60 p-5 text-left shadow-sm transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-30 translate-y-4'}`}
                   >
-                    <div className="flex items-center gap-2 text-[#5B563E]">
-                      <Icon className="h-4 w-4" aria-hidden="true" />
-                      <Typography as="h3" variant="h3" className="text-sm text-[#5B563E]">
+                    <div className="flex items-center gap-3 text-primary mb-3">
+                      <div className={`p-2 rounded-lg ${isVisible ? 'bg-amber-100 text-amber-700' : 'bg-primary/10 text-primary'}`}>
+                        <Icon className="h-5 w-5" aria-hidden="true" />
+                      </div>
+                      <Typography as="h3" variant="h3" className="text-sm font-bold">
                         {card.title}
                       </Typography>
                     </div>
-                    <Typography as="p" variant="muted" className="mt-2 text-[#8A825E]">
+                    <Typography as="p" variant="muted" className="text-xs leading-relaxed">
                       {card.body}
                     </Typography>
                   </div>

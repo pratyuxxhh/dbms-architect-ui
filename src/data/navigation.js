@@ -9,5 +9,4 @@ export const authNavigation = [
   { label: 'Dashboard', href: '/dashboard', icon: HiOutlineSquares2X2 },
   { label: 'Documentation', href: '/docs', icon: HiOutlineBookOpen },
   { label: 'Settings', href: '/settings', icon: HiOutlineCog6Tooth },
-  { label: 'Profile', href: '/profile', icon: HiOutlineUser },
 ]

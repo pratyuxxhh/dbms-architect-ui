@@ -129,6 +129,15 @@
   }
 }
 
+@keyframes slide-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
 @keyframes pulse-subtle {
   0%, 100% {
     opacity: 1;

@@ -63,7 +63,7 @@ export default function PromptInput({
           variant="primary"
           disabled={isButtonDisabled}
           loading={false}
-          className="w-full sm:w-auto"
+          className="w-full sm:w-auto shadow-lg shadow-primary/10 hover:shadow-xl hover:-translate-y-0.5 transition-all"
         >
           {loading ? (
             <span className="flex items-center gap-2">
