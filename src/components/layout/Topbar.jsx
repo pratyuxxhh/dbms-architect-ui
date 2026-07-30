@@ -1,38 +1,52 @@
-import { HiOutlineBars3 } from 'react-icons/hi2'
-import StatusBadge from '../dashboard/StatusBadge'
-import Typography from '../common/Typography'
+import { HiOutlineBars3, HiOutlineAdjustmentsHorizontal, HiOutlineSparkles } from 'react-icons/hi2'
+import { cn } from '../../utils/cn'
 
-export default function Topbar({ onMenuClick }) {
-  
+export default function Topbar({ onMenuClick, onToggleInspector, isInspectorOpen }) {
+  const username = localStorage.getItem('username') || 'Developer'
 
   return (
-    <header className="sticky top-0 z-20 border-b border-primary/10 bg-background/95 backdrop-blur-xl">
-      <div className="flex items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
-        <div className="flex min-w-0 items-center gap-3 lg:gap-4">
-          <button
-            type="button"
-            onClick={onMenuClick}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-primary/10 bg-surface text-primary shadow-sm shadow-primary/5 transition-all duration-250 hover:-translate-y-0.5 hover:shadow-md lg:hidden"
-            aria-label="Open sidebar"
-          >
-            <HiOutlineBars3 className="h-5 w-5" aria-hidden="true" />
-          </button>
+    <header className="sticky top-0 z-20 h-14 border-b border-primary/15 bg-surface/95 backdrop-blur-xl flex items-center justify-between px-4 sm:px-6">
+      <div className="flex items-center gap-3 min-w-0">
+        <button
+          type="button"
+          onClick={onMenuClick}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-primary/15 bg-background text-primary transition-colors hover:bg-background/80 lg:hidden"
+          aria-label="Open sidebar"
+        >
+          <HiOutlineBars3 className="h-5 w-5" aria-hidden="true" />
+        </button>
 
-          <div className="min-w-0">
-            <Typography as="p" variant="muted" className="flex items-center gap-2">
-              <span className="text-sm">✦</span>
-              DBMS Architect
-            </Typography>
-            <Typography as="h1" variant="h2" className="truncate text-[22px] sm:text-[32px]">
-              Welcome back, {localStorage.getItem("username")}
-            </Typography>
-            <Typography as="p" variant="muted" className="mt-1 max-w-4xl">
-              Design, generate, and refine production-ready database schemas with a clean, focused workflow.
-            </Typography>
-          </div>
+        {/* Workspace Breadcrumbs */}
+        <div className="flex items-center gap-2 font-mono text-xs text-secondary truncate">
+          <span className="font-semibold text-primary">DBMS Architect</span>
+          <span>/</span>
+          <span className="text-amber-600 font-bold">Studio</span>
+          <span className="hidden sm:inline text-primary/40">•</span>
+          <span className="hidden sm:inline text-primary/70 truncate">Welcome, {username}</span>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2 rounded-lg border border-primary/15 bg-background/50 px-2.5 py-1 font-mono text-[11px] text-secondary">
+          <HiOutlineSparkles className="h-3.5 w-3.5 text-amber-500" />
+          <span>PostgreSQL ANSI Engine</span>
         </div>
 
-        <StatusBadge />
+        {/* Inspector Toggle Button */}
+        <button
+          type="button"
+          onClick={onToggleInspector}
+          className={cn(
+            'inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-xs font-mono font-medium transition-all',
+            isInspectorOpen
+              ? 'border-amber-500/40 bg-amber-500/10 text-primary shadow-xs'
+              : 'border-primary/15 bg-background/60 text-secondary hover:bg-background/90 hover:text-primary'
+          )}
+          title="Toggle Inspector Panel (Ctrl+B)"
+        >
+          <HiOutlineAdjustmentsHorizontal className="h-4 w-4 text-amber-500" />
+          <span className="hidden sm:inline">Inspector</span>
+        </button>
       </div>
     </header>
   )

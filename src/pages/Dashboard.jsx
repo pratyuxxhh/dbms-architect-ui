@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import DashboardLayout from '../components/layout/DashboardLayout'
-import Card from '../components/common/Card'
 import PromptInput from '../components/dashboard/PromptInput'
 import SQLDownloadCard from '../components/dashboard/SQLDownloadCard'
 import { extractFilename } from '../utils/filenameExtractor'
@@ -13,6 +12,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false)
   const [blob, setBlob] = useState(null)
   const [filename, setFilename] = useState('')
+  const [selectedDialect, setSelectedDialect] = useState('postgresql')
 
   const handleGenerateSQL = async () => {
     const trimmedPrompt = prompt.trim()
@@ -44,7 +44,7 @@ export default function Dashboard() {
 
         setBlob(fileBlob)
         setFilename(extractedName)
-        toast.success('SQL file generated successfully.')
+        toast.success('SQL file generated successfully!')
       } else if (response.status === 400) {
         const bodyText = await response.text()
         toast.error(bodyText || 'The request is invalid. No SQL schema could be generated.')
@@ -65,19 +65,32 @@ export default function Dashboard() {
     }
   }
 
+  const fileSizeKb = blob ? (blob.size / 1024).toFixed(2) : null
+  const generationStatus = loading ? 'generating' : blob ? 'success' : 'idle'
+
   return (
-    <DashboardLayout>
-      <section className="mx-auto max-w-4xl space-y-6">
-        <Card className="rounded-4xl border-primary/10 bg-surface/90 p-6 sm:p-8 shadow-xl shadow-primary/8 space-y-6">
-          <PromptInput
-            prompt={prompt}
-            onChange={setPrompt}
-            onSubmit={handleGenerateSQL}
-            loading={loading}
-          />
-          <SQLDownloadCard blob={blob} filename={filename} />
-        </Card>
-      </section>
+    <DashboardLayout
+      selectedDialect={selectedDialect}
+      onSelectDialect={setSelectedDialect}
+      generationStatus={generationStatus}
+      fileSizeKb={fileSizeKb}
+      promptLength={prompt.length}
+      onSelectHistoryPrompt={(historyPrompt) => setPrompt(historyPrompt)}
+    >
+      <div className="max-w-5xl mx-auto space-y-6">
+        <PromptInput
+          prompt={prompt}
+          onChange={setPrompt}
+          onSubmit={handleGenerateSQL}
+          loading={loading}
+        />
+
+        <SQLDownloadCard
+          blob={blob}
+          filename={filename}
+          onRegenerate={handleGenerateSQL}
+        />
+      </div>
     </DashboardLayout>
   )
 }
