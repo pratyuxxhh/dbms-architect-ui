@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import { FaGithub } from 'react-icons/fa'
 import Card from '../common/Card'
@@ -13,6 +13,7 @@ import {
   validateRequired,
 } from '../../utils/validation'
 
+const API_URL = import.meta.env.VITE_API_URL;
 const initialForm = {
   username: '',
   firstName: '',
@@ -25,6 +26,7 @@ export default function SignupCard() {
   const [form, setForm] = useState(initialForm)
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleChange = (field) => (event) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }))
@@ -67,9 +69,50 @@ export default function SignupCard() {
     if (!validate()) return
 
     setLoading(true)
-    await new Promise((resolve) => setTimeout(resolve, 1200))
-    console.log('Signup form submitted:', form)
-    setLoading(false)
+
+    try {
+      const response = await fetch(`${API_URL}/public/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      })
+
+      const responseText = await response.text()
+
+      let responseMessage = responseText
+
+      try {
+        const parsedResponse = JSON.parse(responseText)
+
+        if (typeof parsedResponse === 'string') {
+          responseMessage = parsedResponse
+        } else {
+          responseMessage =
+            parsedResponse.message || parsedResponse.detail || responseText
+        }
+      } catch {
+        responseMessage = responseText
+      }
+
+      if (!response.ok) {
+        throw new Error(responseMessage || 'Something went wrong')
+      }
+
+      navigate('/login', {
+        replace: true,
+        state: {
+          toastMessage: responseMessage,
+        },
+      })
+    } catch (err) {
+      setErrors({
+        submit: err instanceof Error ? err.message : 'Something went wrong',
+      })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -83,6 +126,15 @@ export default function SignupCard() {
       />
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate>
+        {errors.submit && (
+          <div
+            className="rounded-2xl border border-primary/10 bg-primary/5 px-4 py-3 text-sm text-primary"
+            role="alert"
+          >
+            {errors.submit}
+          </div>
+        )}
+
         <InputField
           label="Username"
           name="username"

@@ -3,6 +3,8 @@ import StatusBadge from '../dashboard/StatusBadge'
 import Typography from '../common/Typography'
 
 export default function Topbar({ onMenuClick }) {
+  
+
   return (
     <header className="sticky top-0 z-20 border-b border-primary/10 bg-background/95 backdrop-blur-xl">
       <div className="flex items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8 lg:py-5">
@@ -22,7 +24,7 @@ export default function Topbar({ onMenuClick }) {
               DBMS Architect
             </Typography>
             <Typography as="h1" variant="h2" className="truncate text-[22px] sm:text-[32px]">
-              Welcome back, User!
+              Welcome back, {localStorage.getItem("username")}
             </Typography>
             <Typography as="p" variant="muted" className="mt-1 max-w-4xl">
               Design, generate, and refine production-ready database schemas with a clean, focused workflow.

@@ -17,7 +17,7 @@ export default function Card({
   return (
     <Component
       className={cn(
-        'rounded-[32px] border border-primary/10 bg-surface',
+        'rounded-[16px] border border-primary/10 bg-surface',
         shadow && 'shadow-xl shadow-primary/8',
         paddings[padding],
         className
