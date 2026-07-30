@@ -45,14 +45,14 @@ function AppShell() {
       )}
 
       <Routes>
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/landing" element={<Landing />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
 
-
-         <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/generating-schema" element={<GeneratingSchema />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/generating-schema" element={<GeneratingSchema />} />
         </Route>
       </Routes>
     </>
