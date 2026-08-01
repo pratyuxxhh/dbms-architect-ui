@@ -9,11 +9,47 @@ import LoadingSpinner from './LoadingSpinner'
 import { cn } from '../../utils/cn'
 
 const TEMPLATE_PROMPTS = [
-  { label: '🛒 E-Commerce', prompt: 'Create an e-commerce database with users, products, categories, shopping carts, orders, order items, and payment transactions.' },
-  { label: '💳 SaaS Billing', prompt: 'Design a SaaS billing system with organizations, users, subscription plans, invoices, usage metrics, and payment methods.' },
-  { label: '🚂 Railway Booking', prompt: 'Create a railway reservation system with trains, stations, routes, passengers, seats, and ticket bookings.' },
-  { label: '📊 Analytics Warehouse', prompt: 'Design an analytics data warehouse with events, user sessions, pageviews, device metadata, and aggregated daily metrics.' },
-]
+  {
+    label: '🛒 E-Commerce',
+    prompt: `Design a scalable e-commerce database with customers, products, categories, inventory, shopping carts, orders, order items, payments, shipments, and product reviews.
+Include relationships, constraints, and support for order tracking and stock management.`
+  },
+  {
+    label: '💳 SaaS Billing',
+    prompt: `Create a multi-tenant SaaS billing database containing organizations, users, roles, subscription plans, invoices, payment methods, usage tracking, and billing history.
+Support subscription upgrades, renewals, and payment records.`
+  },
+  {
+    label: '🚂 Railway Booking',
+    prompt: `Design a railway reservation system with trains, stations, routes, schedules, coaches, seats, passengers, ticket bookings, and fare details.
+Support seat availability, cancellations, and journey history.`
+  },
+  {
+    label: '📊 Analytics Warehouse',
+    prompt: `Build an analytics warehouse for storing user events, sessions, page views, devices, traffic sources, and daily aggregated metrics.
+Optimize the schema for reporting, dashboards, and historical analysis.`
+  },
+  {
+    label: '🏥 Hospital Management',
+    prompt: `Create a hospital management database with patients, doctors, departments, appointments, admissions, prescriptions, laboratory tests, and billing.
+Support patient medical history and treatment records.`
+  },
+  {
+    label: '🎓 University Management',
+    prompt: `Design a university database with students, faculty, departments, courses, enrollments, examinations, grades, attendance, and timetables.
+Include prerequisites and semester-wise academic records.`
+  },
+  {
+    label: '🏦 Banking System',
+    prompt: `Build a banking database containing customers, accounts, branches, transactions, cards, loans, beneficiaries, and fund transfers.
+Ensure accurate transaction history and account relationships.`
+  },
+  {
+    label: '🍽️ Restaurant Ordering',
+    prompt: `Design a restaurant management system with customers, menu items, tables, reservations, orders, order items, staff, and payments.
+Support dine-in, takeaway, delivery, and order status tracking.`
+  }
+];
 
 export default function PromptInput({
   prompt,
