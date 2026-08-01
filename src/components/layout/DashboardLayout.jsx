@@ -43,6 +43,18 @@ export default function DashboardLayout({
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [toggleInspector])
 
+  const [isDesktop, setIsDesktop] = useState(
+    typeof window !== 'undefined' ? window.innerWidth >= 1024 : true
+  )
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024)
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <div className="min-h-screen bg-background text-primary font-sans relative overflow-hidden flex">
       {/* 1. Left Sidebar Component */}
@@ -64,10 +76,10 @@ export default function DashboardLayout({
       {/* 2. Main Middle Workspace Container */}
       <div
         style={{
-          paddingLeft: `${sidebarWidth}px`,
-          paddingRight: isInspectorOpen ? `${inspectorWidth}px` : '0px',
+          paddingLeft: isDesktop ? `${sidebarWidth}px` : '0px',
+          paddingRight: isDesktop && isInspectorOpen ? `${inspectorWidth}px` : '0px',
         }}
-        className="flex-1 flex flex-col min-h-screen transition-all duration-150"
+        className="flex-1 flex flex-col min-h-screen transition-all duration-150 min-w-0"
       >
         <Topbar
           onMenuClick={() => setIsSidebarOpen(true)}

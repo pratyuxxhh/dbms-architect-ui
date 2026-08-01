@@ -8,17 +8,17 @@ export default function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative flex flex-col items-center pt-[130px] pb-16 text-center overflow-hidden bg-grid-pattern"
+      className="relative flex flex-col items-center pt-22 sm:pt-32 lg:pt-[130px] pb-10 sm:pb-16 text-center overflow-hidden bg-grid-pattern"
     >
       {/* Soft Background Glow Orbs */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-gradient-to-tr from-amber-200/40 via-amber-400/20 to-emerald-300/20 blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] h-[350px] bg-gradient-to-tr from-amber-200/40 via-amber-400/20 to-emerald-300/20 blur-[100px] rounded-full pointer-events-none" />
 
       <Container className="relative flex flex-col items-center z-10">
         <HeroBadge />
 
         <h1
           id="hero-heading"
-          className="mt-6 max-w-4xl text-4xl font-extrabold tracking-tight text-primary sm:text-6xl lg:text-7xl lg:leading-[1.1]"
+          className="mt-5 sm:mt-6 max-w-4xl text-3xl font-extrabold tracking-tight text-primary sm:text-6xl lg:text-7xl lg:leading-[1.1]"
         >
           Architect Production SQL Schemas{' '}
           <span className="bg-gradient-to-r from-amber-700 via-amber-800 to-amber-900 bg-clip-text text-transparent underline decoration-amber-400/50 decoration-wavy">
@@ -26,11 +26,11 @@ export default function Hero() {
           </span>
         </h1>
 
-        <p className="mt-6 max-w-3xl text-lg font-normal text-primary/85 sm:text-xl md:text-2xl md:leading-relaxed">
+        <p className="mt-4 sm:mt-6 max-w-3xl text-sm font-normal text-primary/85 sm:text-xl md:text-2xl md:leading-relaxed">
           Transform natural language descriptions into fully-normalized 3NF relational schemas, primary/foreign key connections, ANSI DDL scripts, and interactive ER diagrams.
         </p>
 
-        <div className="mt-8">
+        <div className="mt-6 sm:mt-8 w-full flex justify-center">
           <HeroButtons />
         </div>
 

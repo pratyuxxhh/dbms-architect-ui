@@ -60,7 +60,7 @@ export default function Sidebar({ isOpen, onClose, width = 260, onSelectHistoryP
       <aside
         style={{ width: `${width}px` }}
         className={cn(
-          'fixed inset-y-0 left-0 z-50 flex flex-col border-r border-primary/15 bg-surface/95 px-3 py-4 shadow-xl shadow-primary/5 transition-transform duration-200 ease-out backdrop-blur-xl select-none',
+          'fixed inset-y-0 left-0 z-50 flex w-80 max-w-[85vw] flex-col border-r border-primary/15 bg-surface/95 px-3 py-4 shadow-xl shadow-primary/5 transition-transform duration-200 ease-out backdrop-blur-xl select-none',
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
         aria-label="Sidebar Workspace Navigation"

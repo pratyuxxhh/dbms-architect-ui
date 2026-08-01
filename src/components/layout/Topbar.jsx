@@ -5,20 +5,20 @@ export default function Topbar({ onMenuClick, onToggleInspector, isInspectorOpen
   const username = localStorage.getItem('username') || 'Developer'
 
   return (
-    <header className="sticky top-0 z-20 h-14 border-b border-primary/15 bg-surface/95 backdrop-blur-xl flex items-center justify-between px-4 sm:px-6">
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="sticky top-0 z-20 h-14 border-b border-primary/15 bg-surface/95 backdrop-blur-xl flex items-center justify-between px-3 sm:px-6">
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         <button
           type="button"
           onClick={onMenuClick}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-primary/15 bg-background text-primary transition-colors hover:bg-background/80 lg:hidden"
+          className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg border border-primary/15 bg-background text-primary transition-colors hover:bg-background/80 lg:hidden shrink-0"
           aria-label="Open sidebar"
         >
-          <HiOutlineBars3 className="h-5 w-5" aria-hidden="true" />
+          <HiOutlineBars3 className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
         </button>
 
         {/* Workspace Breadcrumbs */}
-        <div className="flex items-center gap-2 font-mono text-xs text-secondary truncate">
-          <span className="font-semibold text-primary">DBMS Architect</span>
+        <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[11px] sm:text-xs text-secondary truncate">
+          <span className="font-semibold text-primary truncate">DBMS Architect</span>
           <span>/</span>
           <span className="text-amber-600 font-bold">Studio</span>
           <span className="hidden sm:inline text-primary/40">•</span>

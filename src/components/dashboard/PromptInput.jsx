@@ -61,7 +61,7 @@ export default function PromptInput({
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 font-mono text-[11px] text-secondary self-start sm:self-auto bg-background/50 px-2.5 py-1 rounded-lg border border-primary/10">
+        <div className="hidden sm:flex items-center gap-1.5 font-mono text-[11px] text-secondary self-start sm:self-auto bg-background/50 px-2.5 py-1 rounded-lg border border-primary/10">
           <HiOutlineCommandLine className="h-3.5 w-3.5 text-amber-500" />
           <span>Press <kbd className="font-bold text-primary px-1 bg-surface rounded border border-primary/20">Ctrl+Enter</kbd> to generate</span>
         </div>
@@ -106,7 +106,7 @@ export default function PromptInput({
         />
 
         {/* Editor Controls Bar */}
-        <div className="flex items-center justify-between pt-3 border-t border-primary/10 mt-2 font-mono text-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-3 border-t border-primary/10 mt-2 font-mono text-xs">
           <div className="flex items-center gap-3 text-secondary text-[11px]">
             <span>{prompt.length} / 2000 chars</span>
             <span>•</span>
@@ -122,15 +122,15 @@ export default function PromptInput({
             variant="primary"
             disabled={isButtonDisabled}
             loading={false}
-            className="h-9 px-4 text-xs font-bold shadow-md shadow-primary/10 hover:shadow-lg transition-all"
+            className="h-9 px-4 text-xs font-bold shadow-md shadow-primary/10 hover:shadow-lg transition-all self-end sm:self-auto w-full sm:w-auto"
           >
             {loading ? (
-              <span className="flex items-center gap-2">
+              <span className="flex items-center justify-center gap-2">
                 <LoadingSpinner className="h-3.5 w-3.5" />
                 <span>Generating Schema...</span>
               </span>
             ) : (
-              <span className="flex items-center gap-1.5">
+              <span className="flex items-center justify-center gap-1.5">
                 <span>Generate SQL</span>
                 <HiOutlineArrowRight className="h-3.5 w-3.5" />
               </span>

@@ -24,35 +24,35 @@ const AI_POINTS = [
 
 export default function SchemaComparison() {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-12 sm:py-20 lg:py-24 relative overflow-hidden">
       <Container>
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
           <span className="text-xs font-mono uppercase tracking-widest text-secondary font-bold bg-primary/10 px-3 py-1 rounded-full">
             Why Upgrade Your Workflow?
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary mt-4 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-primary mt-3 sm:mt-4 tracking-tight">
             Traditional SQL vs DBMS Architect AI
           </h2>
-          <p className="text-lg text-primary/80 mt-4 leading-relaxed">
+          <p className="text-sm sm:text-lg text-primary/80 mt-3 sm:mt-4 leading-relaxed">
             See how AI automation eliminates schema bugs, speeds up backend development, and improves database design quality.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {/* Manual Card */}
-          <div className="rounded-3xl border border-red-900/10 bg-red-950/5 p-8 flex flex-col justify-between relative">
+          <div className="rounded-3xl border border-red-900/10 bg-red-950/5 p-5 sm:p-8 flex flex-col justify-between relative">
             <div>
-              <div className="flex items-center justify-between pb-6 border-b border-red-900/10 mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-red-900/10 mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-100 text-red-700 font-bold">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-700 font-bold">
                     <HiOutlineClock className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-primary">Manual Database Design</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-primary">Manual Database Design</h3>
                     <p className="text-xs text-secondary font-mono">Slow & Error-Prone</p>
                   </div>
                 </div>
-                <span className="text-xs font-mono text-red-700 bg-red-100 px-3 py-1 rounded-full font-bold">
+                <span className="text-xs font-mono text-red-700 bg-red-100 px-3 py-1 rounded-full font-bold self-start sm:self-auto">
                   2-6 Hours
                 </span>
               </div>
@@ -73,26 +73,26 @@ export default function SchemaComparison() {
           </div>
 
           {/* DBMS Architect AI Card */}
-          <div className="rounded-3xl border border-amber-500/30 bg-surface/90 p-8 flex flex-col justify-between relative shadow-xl shadow-amber-500/10">
+          <div className="rounded-3xl border border-amber-500/30 bg-surface/90 p-5 sm:p-8 flex flex-col justify-between relative shadow-xl shadow-amber-500/10">
             {/* Highlighting Glow */}
-            <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
+            <div className="absolute top-0 right-4 sm:right-0 transform -translate-y-3 sm:translate-x-2 sm:-translate-y-2">
               <span className="bg-amber-600 text-white text-[11px] font-bold font-mono px-3 py-1 rounded-full shadow-md">
                 RECOMMENDED
               </span>
             </div>
 
             <div>
-              <div className="flex items-center justify-between pb-6 border-b border-primary/10 mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 border-b border-primary/10 mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-background font-bold shadow-md">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-background font-bold shadow-md">
                     <HiOutlineSparkles className="h-6 w-6 text-amber-300" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-extrabold text-primary">DBMS Architect AI</h3>
+                    <h3 className="text-lg sm:text-xl font-extrabold text-primary">DBMS Architect AI</h3>
                     <p className="text-xs text-amber-800 font-mono font-bold">Instant & Optimized</p>
                   </div>
                 </div>
-                <span className="text-xs font-mono text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full font-bold">
+                <span className="text-xs font-mono text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full font-bold self-start sm:self-auto">
                   &lt; 10 Seconds
                 </span>
               </div>

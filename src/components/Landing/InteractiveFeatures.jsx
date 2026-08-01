@@ -106,23 +106,23 @@ export default function InteractiveFeatures() {
   const activeTab = FEATURE_TABS.find((t) => t.id === activeTabId) || FEATURE_TABS[0]
 
   return (
-    <section id="features" className="py-24 bg-surface/40 border-y border-primary/10 relative">
+    <section id="features" className="py-12 sm:py-20 lg:py-24 bg-surface/40 border-y border-primary/10 relative">
       <Container>
         {/* Section Title */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
           <span className="text-xs font-mono uppercase tracking-widest text-secondary font-bold bg-primary/10 px-3 py-1 rounded-full">
             Powerful Platform Capabilities
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary mt-4 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-primary mt-3 sm:mt-4 tracking-tight">
             Engineered for Modern DB Architects
           </h2>
-          <p className="text-lg text-primary/80 mt-4 leading-relaxed">
+          <p className="text-sm sm:text-lg text-primary/80 mt-3 sm:mt-4 leading-relaxed">
             Everything you need to design, validate, and export production database schemas without manual DDL headaches.
           </p>
         </div>
 
         {/* Tab Buttons Bar */}
-        <div className="flex items-center justify-center gap-2 overflow-x-auto custom-scrollbar pb-4 mb-10">
+        <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto custom-scrollbar pb-4 mb-6 sm:mb-10 px-1">
           {FEATURE_TABS.map((tab) => {
             const Icon = tab.icon
             const isActive = tab.id === activeTabId
@@ -131,13 +131,13 @@ export default function InteractiveFeatures() {
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTabId(tab.id)}
-                className={`flex items-center gap-2.5 px-5 py-3 rounded-2xl text-sm font-semibold shrink-0 transition-all ${
+                className={`flex items-center gap-2 px-3.5 py-2.5 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold shrink-0 transition-all ${
                   isActive
                     ? 'bg-primary text-background shadow-lg shadow-primary/20 scale-[1.02]'
                     : 'bg-background/80 text-primary hover:bg-background border border-primary/10'
                 }`}
               >
-                <Icon className={`h-5 w-5 ${isActive ? 'text-amber-300' : 'text-primary'}`} />
+                <Icon className={`h-4 w-4 sm:h-5 sm:w-5 ${isActive ? 'text-amber-300' : 'text-primary'}`} />
                 <span>{tab.title}</span>
               </button>
             )
@@ -145,7 +145,7 @@ export default function InteractiveFeatures() {
         </div>
 
         {/* Tab Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-background rounded-3xl border border-primary/15 p-6 sm:p-10 shadow-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center bg-background rounded-3xl border border-primary/15 p-5 sm:p-10 shadow-xl">
           {/* Left Text Column */}
           <div className="lg:col-span-6 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-mono font-bold">

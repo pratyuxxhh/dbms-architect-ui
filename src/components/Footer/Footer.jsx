@@ -34,9 +34,9 @@ const FOOTER_COLUMNS = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-primary/15 bg-surface/30 pt-16 pb-12">
+    <footer className="border-t border-primary/15 bg-surface/30 pt-10 sm:pt-16 pb-8 sm:pb-12">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-primary/10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10 pb-8 sm:pb-12 border-b border-primary/10">
           {/* Brand Col */}
           <div className="md:col-span-5 space-y-4">
             <Link to="/" className="flex items-center gap-3">

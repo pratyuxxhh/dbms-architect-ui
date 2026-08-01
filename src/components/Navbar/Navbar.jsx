@@ -25,10 +25,10 @@ export default function Navbar({
   const closeMobileMenu = () => setIsMobileMenuOpen(false)
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 pt-6">
+    <header className="fixed inset-x-0 top-0 z-50 pt-3 sm:pt-6">
       <Container>
-        <div className="nav-glass relative rounded-[30px] border border-primary/10 shadow-lg shadow-primary/5">
-          <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6">
+        <div className="nav-glass relative rounded-[22px] sm:rounded-[30px] border border-primary/10 shadow-lg shadow-primary/5">
+          <div className="flex h-14 sm:h-16 items-center justify-between gap-3 px-3.5 sm:px-6">
             <Link
               to="/"
               className="flex min-w-0 items-center gap-3 transition-opacity duration-250 hover:opacity-80"

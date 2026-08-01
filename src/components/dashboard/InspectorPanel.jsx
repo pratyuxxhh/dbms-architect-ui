@@ -43,11 +43,20 @@ export default function InspectorPanel({
   if (!isOpen) return null
 
   return (
-    <aside
-      style={{ width: `${width}px` }}
-      className="fixed inset-y-0 right-0 z-30 flex flex-col border-l border-primary/15 bg-surface/95 backdrop-blur-xl transition-all duration-200 select-none hidden lg:flex"
-      aria-label="Inspector Panel"
-    >
+    <>
+      {/* Mobile Backdrop */}
+      <button
+        type="button"
+        aria-label="Close inspector panel"
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs lg:hidden"
+        onClick={onClose}
+      />
+
+      <aside
+        style={{ width: `${width}px` }}
+        className="fixed inset-y-0 right-0 z-50 flex w-80 max-w-[85vw] flex-col border-l border-primary/15 bg-surface/95 backdrop-blur-xl transition-transform duration-200 select-none shadow-2xl lg:shadow-none"
+        aria-label="Inspector Panel"
+      >
       {/* Panel Header */}
       <div className="flex h-14 items-center justify-between border-b border-primary/15 px-4">
         <div className="flex items-center gap-2 font-mono text-xs font-semibold text-primary uppercase tracking-wider">
@@ -235,5 +244,6 @@ export default function InspectorPanel({
         DBMS Architect Studio v2.0 • Ready
       </div>
     </aside>
+    </>
   )
 }

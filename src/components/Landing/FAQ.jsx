@@ -33,44 +33,44 @@ export default function FAQ() {
   }
 
   return (
-    <section className="py-24 relative">
+    <section className="py-12 sm:py-20 lg:py-24 relative">
       <Container maxW="4xl">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <span className="text-xs font-mono uppercase tracking-widest text-secondary font-bold bg-primary/10 px-3 py-1 rounded-full">
             Got Questions?
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary mt-4 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-primary mt-3 sm:mt-4 tracking-tight">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-primary/80 mt-4 leading-relaxed">
+          <p className="text-sm sm:text-lg text-primary/80 mt-3 sm:mt-4 leading-relaxed">
             Everything you need to know about DBMS Architect schema generation.
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {FAQS.map((faq, idx) => {
             const isOpen = openIdx === idx
             return (
               <div
                 key={idx}
-                className="rounded-2xl border border-primary/15 bg-surface/60 overflow-hidden transition-all duration-200"
+                className="rounded-xl sm:rounded-2xl border border-primary/15 bg-surface/60 overflow-hidden transition-all duration-200"
               >
                 <button
                   type="button"
                   onClick={() => toggle(idx)}
-                  className="w-full flex items-center justify-between p-6 text-left text-base sm:text-lg font-bold text-primary hover:bg-surface/80 transition-colors"
+                  className="w-full flex items-center justify-between p-4 sm:p-6 text-left text-sm sm:text-lg font-bold text-primary hover:bg-surface/80 transition-colors gap-3"
                   aria-expanded={isOpen}
                 >
                   <span>{faq.question}</span>
                   <HiOutlineChevronDown
-                    className={`h-5 w-5 text-primary shrink-0 transition-transform duration-250 ${
+                    className={`h-4 w-4 sm:h-5 sm:w-5 text-primary shrink-0 transition-transform duration-250 ${
                       isOpen ? 'rotate-180 text-amber-700' : ''
                     }`}
                   />
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 pb-6 pt-1 text-sm sm:text-base text-primary/85 leading-relaxed border-t border-primary/10 animate-slide-down">
+                  <div className="px-4 pb-4 sm:px-6 sm:pb-6 pt-1 text-xs sm:text-base text-primary/85 leading-relaxed border-t border-primary/10 animate-slide-down">
                     {faq.answer}
                   </div>
                 )}

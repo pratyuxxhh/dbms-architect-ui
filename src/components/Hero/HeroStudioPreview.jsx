@@ -285,55 +285,55 @@ export default function HeroStudioPreview() {
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto mt-12 rounded-[28px] border border-primary/15 bg-[#141824] p-3 sm:p-5 shadow-2xl shadow-primary/20 text-slate-100 overflow-hidden relative group">
+    <div className="w-full max-w-5xl mx-auto mt-8 sm:mt-12 rounded-[20px] sm:rounded-[28px] border border-primary/15 bg-[#141824] p-2.5 sm:p-5 shadow-2xl shadow-primary/20 text-slate-100 overflow-hidden relative group">
       {/* Background Subtle Gradient Lights */}
       <div className="absolute -top-24 -left-24 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800/80 px-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-slate-800/80 px-1 sm:px-2">
         {/* Left Window Dots + Title */}
-        <div className="flex items-center gap-3">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
-            <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-            <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex gap-1.5 shrink-0">
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500/80" />
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-amber-500/80" />
+            <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-500/80" />
           </div>
           <div className="h-4 w-[1px] bg-slate-800 hidden sm:block" />
-          <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-            <RiDatabase2Line className="text-amber-400 h-4 w-4" />
-            <span>schema_studio_v2.sql</span>
-            <span className="bg-emerald-500/15 text-emerald-400 text-[10px] px-2 py-0.5 rounded-full border border-emerald-500/20 font-sans font-medium">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono text-slate-400 min-w-0">
+            <RiDatabase2Line className="text-amber-400 h-3.5 w-3.5 shrink-0" />
+            <span className="truncate">schema_studio_v2.sql</span>
+            <span className="bg-emerald-500/15 text-emerald-400 text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-0.5 rounded-full border border-emerald-500/20 font-sans font-medium shrink-0">
               3NF Validated
             </span>
           </div>
         </div>
 
         {/* View Switcher Tabs (SQL / Diagram) */}
-        <div className="flex items-center gap-2 bg-slate-900/90 p-1 rounded-xl border border-slate-800 self-start md:self-auto">
+        <div className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800 w-full sm:w-auto">
           <button
             type="button"
             onClick={() => setActiveTab('sql')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition-all ${
               activeTab === 'sql'
                 ? 'bg-amber-500 text-slate-950 font-semibold shadow-md'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            <HiOutlineCodeBracket className="h-4 w-4" />
-            SQL Code Editor
+            <HiOutlineCodeBracket className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            SQL Code
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('diagram')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium transition-all ${
               activeTab === 'diagram'
                 ? 'bg-amber-500 text-slate-950 font-semibold shadow-md'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            <RiBracesLine className="h-4 w-4" />
-            Interactive ER Diagram
+            <RiBracesLine className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            ER Diagram
           </button>
         </div>
       </div>
@@ -381,15 +381,15 @@ export default function HeroStudioPreview() {
       {activeTab === 'sql' ? (
         <div className="relative">
           {/* Dialect Selector & Copy Button Toolbar */}
-          <div className="flex items-center justify-between bg-[#191e2e] px-4 py-2 rounded-t-xl border border-slate-800 text-xs">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 bg-[#191e2e] px-3 sm:px-4 py-2 rounded-t-xl border border-slate-800 text-xs">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <span className="text-slate-400 font-mono text-[11px]">Dialect:</span>
               {['postgresql', 'mysql', 'supabase'].map((dialect) => (
                 <button
                   key={dialect}
                   type="button"
                   onClick={() => setActiveDialect(dialect)}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-mono capitalize transition-all ${
+                  className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[11px] font-mono capitalize transition-all ${
                     activeDialect === dialect
                       ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-semibold'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
@@ -400,11 +400,11 @@ export default function HeroStudioPreview() {
               ))}
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 self-end sm:self-auto">
               <button
                 type="button"
                 onClick={handleCopy}
-                className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition-colors border border-slate-700"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition-colors border border-slate-700"
               >
                 {copied ? (
                   <>

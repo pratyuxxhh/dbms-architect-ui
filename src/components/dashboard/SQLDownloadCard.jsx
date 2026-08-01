@@ -86,14 +86,14 @@ export default function SQLDownloadCard({
         </div>
 
         {/* Primary Download Action */}
-        <div>
+        <div className="w-full sm:w-auto">
           <DownloadButton blob={blob} filename={filename} disabled={!hasFile} />
         </div>
       </div>
 
       {/* Action Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs pt-1">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={handleCopyCode}
@@ -126,7 +126,7 @@ export default function SQLDownloadCard({
           <button
             type="button"
             onClick={onRegenerate}
-            className="inline-flex items-center gap-1.5 text-xs text-secondary hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-secondary hover:text-primary transition-colors py-1"
           >
             <HiOutlineArrowPath className="h-3.5 w-3.5 text-amber-500" />
             <span>Regenerate</span>
@@ -136,12 +136,12 @@ export default function SQLDownloadCard({
 
       {/* Code Preview Terminal Window */}
       {showPreview && previewText && (
-        <div className="rounded-xl border border-primary/20 bg-black/90 p-4 font-mono text-xs text-emerald-300 leading-relaxed max-h-72 overflow-y-auto custom-scrollbar">
-          <div className="flex items-center justify-between text-[10px] text-white/50 border-b border-white/10 pb-2 mb-3">
-            <span>PREVIEW: {filename}</span>
-            <span>ANSI / POSTGRESQL</span>
+        <div className="rounded-xl border border-primary/20 bg-black/90 p-4 font-mono text-xs text-emerald-300 leading-relaxed max-h-72 overflow-y-auto overflow-x-auto custom-scrollbar">
+          <div className="flex items-center justify-between text-[10px] text-white/50 border-b border-white/10 pb-2 mb-3 min-w-0">
+            <span className="truncate pr-2">PREVIEW: {filename}</span>
+            <span className="shrink-0">ANSI / POSTGRESQL</span>
           </div>
-          <pre className="whitespace-pre-wrap">{previewText}</pre>
+          <pre className="whitespace-pre-wrap break-words">{previewText}</pre>
         </div>
       )}
     </div>

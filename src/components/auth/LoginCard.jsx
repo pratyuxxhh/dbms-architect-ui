@@ -99,14 +99,14 @@ export default function LoginCard() {
   return (
     <Card
       padding="md"
-      className="animate-slide-up w-full max-w-115 rounded-[32px] border border-primary/20 bg-surface/90 px-6 py-8 shadow-2xl shadow-primary/10 backdrop-blur-xl sm:px-10 sm:py-10 transition-all hover:border-primary/30"
+      className="animate-slide-up w-full max-w-md rounded-[24px] sm:rounded-[32px] border border-primary/20 bg-surface/90 px-5 py-6 sm:px-10 sm:py-10 shadow-2xl shadow-primary/10 backdrop-blur-xl transition-all hover:border-primary/30"
     >
       <AuthHeader
         title="Welcome Back"
         subtitle="Sign in to continue building and managing your database architecture."
       />
 
-      <form onSubmit={handleSubmit} className="mt-8 space-y-6" noValidate>
+      <form onSubmit={handleSubmit} className="mt-6 sm:mt-8 space-y-5 sm:space-y-6" noValidate>
         <InputField
           label="Username"
           name="username"
@@ -121,7 +121,7 @@ export default function LoginCard() {
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="text-[15px] font-semibold text-primary">
+            <label htmlFor="password" className="text-sm sm:text-[15px] font-semibold text-primary">
               Password
             </label>
             <ForgotPasswordLink />
@@ -138,11 +138,11 @@ export default function LoginCard() {
             autoComplete="current-password"
             aria-invalid={errors.password ? 'true' : undefined}
             aria-describedby={errors.password ? 'password-error' : undefined}
-            className="h-13 w-full rounded-2xl border border-primary/15 bg-background/80 px-4 text-base text-primary placeholder:text-secondary/60 transition-all duration-250 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+            className="h-11 sm:h-13 w-full rounded-2xl border border-primary/15 bg-background/80 px-4 text-sm sm:text-base text-primary placeholder:text-secondary/60 transition-all duration-250 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
           />
 
           {errors.password && (
-            <p id="password-error" className="text-sm font-medium text-red-600" role="alert">
+            <p id="password-error" className="text-xs sm:text-sm font-medium text-red-600" role="alert">
               {errors.password}
             </p>
           )}
@@ -154,13 +154,13 @@ export default function LoginCard() {
           fullWidth
           loading={loading}
           disabled={loading}
-          className="h-13 text-base font-bold shadow-lg shadow-primary/10 hover:shadow-xl hover:-translate-y-0.5 transition-all"
+          className="h-11 sm:h-13 text-sm sm:text-base font-bold shadow-lg shadow-primary/10 hover:shadow-xl hover:-translate-y-0.5 transition-all"
         >
           Login
         </Button>
       </form>
 
-      <p className="mt-8 text-center text-base text-secondary">
+      <p className="mt-6 sm:mt-8 text-center text-sm sm:text-base text-secondary">
         Don&apos;t have an account?{' '}
         <Link
           to="/signup"
