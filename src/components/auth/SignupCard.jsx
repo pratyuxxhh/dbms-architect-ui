@@ -62,57 +62,80 @@ export default function SignupCard() {
   }
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    if (!validate()) return
+    event.preventDefault();
 
-    setLoading(true)
+    if (!validate()) return;
+
+    const toastId = toast.loading(
+      "The backend might take a few minutes to start..."
+    );
+
+    setLoading(true);
 
     try {
       const response = await fetch(`${API_URL}/public/register`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(form),
-      })
+      });
 
-      const responseText = await response.text()
+      const responseText = await response.text();
 
-      let responseMessage = responseText
+      let responseMessage = responseText;
 
       try {
-        const parsedResponse = JSON.parse(responseText)
+        const parsedResponse = JSON.parse(responseText);
 
-        if (typeof parsedResponse === 'string') {
-          responseMessage = parsedResponse
+        if (typeof parsedResponse === "string") {
+          responseMessage = parsedResponse;
         } else {
           responseMessage =
-            parsedResponse.message || parsedResponse.detail || responseText
+            parsedResponse.message ||
+            parsedResponse.detail ||
+            responseText;
         }
       } catch {
-        responseMessage = responseText
+        responseMessage = responseText;
       }
 
       if (!response.ok) {
-        throw new Error(responseMessage || 'Something went wrong')
+        throw new Error(responseMessage || "Something went wrong");
       }
 
-      toast.success(responseMessage)
-      navigate('/login', {
+      toast.update(toastId, {
+        render: responseMessage,
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+        closeOnClick: true,
+        draggable: true,
+      });
+
+      navigate("/login", {
         replace: true,
-      })
+      });
     } catch (err) {
       const errorMessage =
-        err instanceof TypeError && err.message.includes('Failed to fetch')
-          ? 'Connection refused. Please try again after some time.'
+        err instanceof TypeError && err.message.includes("Failed to fetch")
+          ? "Connection refused. Please try again after some time."
           : err instanceof Error
-          ? err.message
-          : 'Something went wrong'
-      toast.error(errorMessage)
+            ? err.message
+            : "Something went wrong";
+
+      toast.update(toastId, {
+        render: errorMessage,
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+        closeOnClick: true,
+        draggable: true,
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Card

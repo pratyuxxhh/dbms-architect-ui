@@ -48,6 +48,10 @@ export default function LoginCard() {
 
     if (!validate()) return;
 
+    const toastId = toast.loading(
+      "The backend might take a few minutes to start..."
+    );
+
     setLoading(true);
 
     try {
@@ -67,34 +71,52 @@ export default function LoginCard() {
 
       localStorage.setItem("token", token);
 
-      fetch(`${import.meta.env.VITE_API_URL}/user/getName`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      }).then((res) => res.text()).then((data) => {
-        localStorage.setItem("username", data);
-      }).catch((err) => {
-        console.error('Error fetching username:', err);
+      // Wait for username fetch (optional but recommended)
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/user/getName`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const username = await res.text();
+        localStorage.setItem("username", username);
+      } catch (err) {
+        console.error("Error fetching username:", err);
+      }
+
+      toast.update(toastId, {
+        render: "Successfully logged in!",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+        closeOnClick: true,
+        draggable: true,
       });
-      navigate("/dashboard", {
-        replace: true,
-        state: {
-          toastMessage: "Successfully logged in",
-        },
-      });
+
+      navigate("/dashboard", { replace: true });
+
     } catch (err) {
       const errorMessage =
-        err instanceof TypeError && err.message.includes('Failed to fetch')
-          ? 'Connection refused. Please try again after some time.'
+        err instanceof TypeError && err.message.includes("Failed to fetch")
+          ? "Connection refused. Please try again after some time."
           : err instanceof Error
-          ? err.message
-          : 'Something went wrong'
-      toast.error(errorMessage);
+            ? err.message
+            : "Something went wrong";
+
+      toast.update(toastId, {
+        render: errorMessage,
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+        closeOnClick: true,
+        draggable: true,
+      });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Card
