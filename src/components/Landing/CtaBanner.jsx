@@ -28,13 +28,13 @@ export default function CtaBanner() {
 
             <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
               <Link to="/dashboard" className="w-full sm:w-auto">
-                <Button
-                  variant="primary"
-                  className="w-full sm:w-auto bg-background text-primary hover:bg-background/90 px-6 sm:px-8 py-3 text-sm sm:text-base font-bold shadow-lg hover:scale-[1.03] flex items-center justify-center gap-2"
-                >
-                  <span>Open AI Schema Studio</span>
-                  <HiOutlineArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                </Button>
+              <Button
+  variant="primary"
+  className="w-full sm:w-auto bg-primary text-primary-foreground px-6 sm:px-8 py-3 text-sm sm:text-base font-bold shadow-lg flex items-center justify-center gap-2"
+>
+  <span>Open AI Schema Studio</span>
+  <HiOutlineArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
+</Button>
               </Link>
               <Link to="/signup" className="w-full sm:w-auto">
                 <button

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import MainContent from './MainContent'
+import HistoryFile from './HistoryFile'
 import InspectorPanel from '../dashboard/InspectorPanel'
 import { useResizablePanels } from '../../hooks/useResizablePanels'
 
@@ -12,9 +13,9 @@ export default function DashboardLayout({
   generationStatus = 'idle',
   fileSizeKb = null,
   promptLength = 0,
-  onSelectHistoryPrompt,
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [selectedHistoryItem, setSelectedHistoryItem] = useState(null)
   const {
     sidebarWidth,
     inspectorWidth,
@@ -62,7 +63,7 @@ export default function DashboardLayout({
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         width={sidebarWidth}
-        onSelectHistoryPrompt={onSelectHistoryPrompt}
+        onSelectHistoryItem={setSelectedHistoryItem}
       />
 
       {/* Resizable Handle 1: Left Sidebar Drag Border (Desktop) */}
@@ -86,7 +87,15 @@ export default function DashboardLayout({
           onToggleInspector={toggleInspector}
           isInspectorOpen={isInspectorOpen}
         />
-        <MainContent>{children}</MainContent>
+        {selectedHistoryItem ? (
+          <HistoryFile
+            filename={selectedHistoryItem.filename}
+            content={selectedHistoryItem.content}
+            onClose={() => setSelectedHistoryItem(null)}
+          />
+        ) : (
+          <MainContent>{children}</MainContent>
+        )}
       </div>
 
       {/* Resizable Handle 2: Right Inspector Drag Border (Desktop) */}

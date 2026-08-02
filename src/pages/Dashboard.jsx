@@ -75,7 +75,6 @@ export default function Dashboard() {
       generationStatus={generationStatus}
       fileSizeKb={fileSizeKb}
       promptLength={prompt.length}
-      onSelectHistoryPrompt={(historyPrompt) => setPrompt(historyPrompt)}
     >
       <div className="max-w-5xl mx-auto space-y-6">
         <PromptInput
