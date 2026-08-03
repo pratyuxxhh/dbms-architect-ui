@@ -60,12 +60,10 @@ export default function Profile() {
       ],
       createdAt: '2026-01-18T10:42:00',
       updatedAt: '2026-08-02T14:05:00',
-      password: '********',
     }
   })
 
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isLoadingProfile, setIsLoadingProfile] = useState(false)
 
   const fullName = useMemo(
     () => `${profile.firstName} ${profile.lastName}`.trim() || profile.username,
