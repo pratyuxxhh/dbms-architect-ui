@@ -118,7 +118,7 @@ export default function Sidebar({ isOpen, onClose, width = 260, onSelectHistoryI
       >
         {/* Brand Header */}
         <div className="flex items-center justify-between gap-2 px-2 pb-4 border-b border-primary/15">
-          <Link to="/dashboard" className="flex items-center gap-2.5 group min-w-0">
+          <Link to="/" className="flex items-center gap-2.5 group min-w-0" title="Go to landing page">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-amber-300 shadow-sm group-hover:scale-105 transition-transform shrink-0">
               <RiDatabase2Line className="h-5 w-5" aria-hidden="true" />
             </div>

@@ -66,9 +66,7 @@ export default function SignupCard() {
 
     if (!validate()) return;
 
-    const toastId = toast.loading(
-      "The backend might take a few minutes to start..."
-    );
+    const toastId = toast.loading('The backend might take 1 minute to start...')
 
     setLoading(true);
 
@@ -140,7 +138,7 @@ export default function SignupCard() {
   return (
     <Card
       padding="md"
-      className="animate-slide-up w-full max-w-md rounded-[24px] sm:rounded-[28px] border border-primary/20 bg-surface/90 px-5 py-5 sm:px-8 sm:py-7 shadow-2xl shadow-primary/10 backdrop-blur-xl transition-all hover:border-primary/30"
+      className="animate-slide-up w-full max-w-md rounded-3xl sm:rounded-card border border-primary/20 bg-surface/90 px-5 py-5 sm:px-8 sm:py-7 shadow-2xl shadow-primary/10 backdrop-blur-xl transition-all hover:border-primary/30"
     >
       <AuthHeader
         title="Create Your Account"

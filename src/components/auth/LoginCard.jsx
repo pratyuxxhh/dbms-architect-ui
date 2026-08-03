@@ -48,9 +48,7 @@ export default function LoginCard() {
 
     if (!validate()) return;
 
-    const toastId = toast.loading(
-      "The backend might take a few minutes to start..."
-    );
+    const toastId = toast.loading('The backend might take 1 minute to start...')
 
     setLoading(true);
 
@@ -121,7 +119,7 @@ export default function LoginCard() {
   return (
     <Card
       padding="md"
-      className="animate-slide-up w-full max-w-md rounded-[24px] sm:rounded-[32px] border border-primary/20 bg-surface/90 px-5 py-6 sm:px-10 sm:py-10 shadow-2xl shadow-primary/10 backdrop-blur-xl transition-all hover:border-primary/30"
+      className="animate-slide-up w-full max-w-md rounded-3xl sm:rounded-4xl border border-primary/20 bg-surface/90 px-5 py-6 sm:px-10 sm:py-10 shadow-2xl shadow-primary/10 backdrop-blur-xl transition-all hover:border-primary/30"
     >
       <AuthHeader
         title="Welcome Back"

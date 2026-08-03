@@ -20,13 +20,17 @@ export default function Topbar({ onMenuClick, onToggleInspector, isInspectorOpen
         </button>
 
         {/* Workspace Breadcrumbs */}
-        <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[11px] sm:text-xs text-secondary truncate">
+        <Link
+          to="/"
+          className="flex items-center gap-1.5 sm:gap-2 font-mono text-[11px] sm:text-xs text-secondary truncate transition-colors hover:text-primary"
+          title="Go to landing page"
+        >
           <span className="font-semibold text-primary truncate">DBMS Architect</span>
           <span>/</span>
           <span className="text-amber-600 font-bold">Studio</span>
           <span className="hidden sm:inline text-primary/40">•</span>
           <span className="hidden sm:inline text-primary/70 truncate">Welcome, {username}</span>
-        </div>
+        </Link>
       </div>
 
       <div className="flex items-center gap-2">

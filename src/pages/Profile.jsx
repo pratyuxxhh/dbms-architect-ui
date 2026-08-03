@@ -150,7 +150,6 @@ export default function Profile() {
 
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {[
-                  { label: 'id', value: profile.id },
                   { label: 'username', value: profile.username },
                   { label: 'password', value: profile.password },
                   { label: 'firstName', value: profile.firstName },
