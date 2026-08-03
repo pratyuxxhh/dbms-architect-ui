@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   HiOutlineCommandLine,
   HiOutlinePlay,
@@ -27,25 +27,12 @@ CREATE TABLE orders (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );`
 
-const SAMPLE_QUERIES = [
-  {
-    label: 'Valid schema',
-    sql: DEFAULT_SQL,
-  },
-  {
-    label: 'Missing semicolon',
-    sql: `SELECT * FROM users
-WHERE email LIKE '%@example.com'`,
-  },
-  {
-    label: 'Broken parentheses',
-    sql: `CREATE TABLE inventory (
-  id INTEGER PRIMARY KEY,
-  quantity INTEGER CHECK (quantity >= 0,
-  updated_at TIMESTAMP
-);`,
-  },
-]
+const PLAYGROUND_SQL_KEY = 'dbms-architect-playground-sql'
+
+function getStoredSql() {
+  const storedSql = localStorage.getItem(PLAYGROUND_SQL_KEY)
+  return storedSql !== null ? storedSql : DEFAULT_SQL
+}
 
 function buildDiagnostics(sql) {
   const lines = sql.split('\n')
@@ -110,29 +97,41 @@ function buildDiagnostics(sql) {
 
 export default function Playground() {
   const editorRef = useRef(null)
-  const [sql, setSql] = useState(DEFAULT_SQL)
+  const lineNumberRef = useRef(null)
+  const [sql, setSql] = useState(getStoredSql)
   const [dialect, setDialect] = useState('postgresql')
   const [runMode, setRunMode] = useState('idle')
   const [lastRunAt, setLastRunAt] = useState(null)
   const [history, setHistory] = useState([{ kind: 'info', text: 'Compiler ready.' }])
 
+  useEffect(() => {
+    localStorage.setItem(PLAYGROUND_SQL_KEY, sql)
+  }, [sql])
+
+  const lineNumbers = useMemo(() => sql.split('\n').map((_, index) => index + 1), [sql])
+
   const analysis = useMemo(() => buildDiagnostics(sql), [sql])
   const hasErrors = analysis.diagnostics.length > 0
   const hasWarnings = analysis.warnings.length > 0
 
-  const runSql = () => {
+  const runSql = (sqlText = sql) => {
+    const executionAnalysis = buildDiagnostics(sqlText)
     const nextHistory = []
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
-    if (analysis.diagnostics.length > 0) {
-      nextHistory.push({ kind: 'error', text: `Execution blocked with ${analysis.diagnostics.length} error(s).` })
-      nextHistory.push(...analysis.diagnostics.map((item) => ({ kind: 'error', text: `L${item.line}: ${item.message}` })))
+    if (sqlText !== sql) {
+      setSql(sqlText)
+    }
+
+    if (executionAnalysis.diagnostics.length > 0) {
+      nextHistory.push({ kind: 'error', text: `Execution blocked with ${executionAnalysis.diagnostics.length} error(s).` })
+      nextHistory.push(...executionAnalysis.diagnostics.map((item) => ({ kind: 'error', text: `L${item.line}: ${item.message}` })))
       setRunMode('error')
       toast.error('SQL compilation failed.')
     } else {
-      nextHistory.push({ kind: 'success', text: `Parsed ${analysis.statementCount} statement(s) successfully.` })
-      if (analysis.warnings.length > 0) {
-        nextHistory.push(...analysis.warnings.map((item) => ({ kind: 'warning', text: `L${item.line}: ${item.message}` })))
+      nextHistory.push({ kind: 'success', text: `Parsed ${executionAnalysis.statementCount} statement(s) successfully.` })
+      if (executionAnalysis.warnings.length > 0) {
+        nextHistory.push(...executionAnalysis.warnings.map((item) => ({ kind: 'warning', text: `L${item.line}: ${item.message}` })))
       }
       nextHistory.push({ kind: 'info', text: `Dialect: ${dialect.toUpperCase()} | Simulated execution completed.` })
       setRunMode('success')
@@ -144,12 +143,6 @@ export default function Playground() {
       ...nextHistory,
     ])
     setLastRunAt(timestamp)
-  }
-
-  const loadSample = (nextSql) => {
-    setSql(nextSql)
-    setRunMode('idle')
-    setHistory([{ kind: 'info', text: 'Sample loaded.' }])
   }
 
   const clearEditor = () => {
@@ -187,76 +180,99 @@ export default function Playground() {
     })
   }
 
+  const handleEditorScroll = () => {
+    if (!editorRef.current || !lineNumberRef.current) return
+    lineNumberRef.current.scrollTop = editorRef.current.scrollTop
+  }
+
   return (
     <DashboardLayout selectedDialect={dialect} onSelectDialect={setDialect} generationStatus={runMode} promptLength={sql.length}>
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-2 sm:px-4 lg:px-6">
-        <div className="flex flex-col gap-3 border-b border-primary/10 pb-4 sm:flex-row sm:items-end sm:justify-between">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-amber-700">
-              <HiOutlineCommandLine className="h-3.5 w-3.5" />
-              Playground
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-2 pb-6 sm:px-4 lg:px-6">
+        <section className="rounded-3xl border border-primary/10 bg-linear-to-br from-surface via-surface to-amber-500/5 p-5 shadow-xl shadow-primary/5 sm:p-6">
+          <div className="flex flex-col gap-4 border-b border-primary/10 pb-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[11px] font-mono font-bold uppercase tracking-[0.2em] text-amber-700">
+                <HiOutlineCommandLine className="h-3.5 w-3.5" />
+                SQL Workbench
+              </div>
+              <h1 className="text-2xl font-black tracking-tight text-primary sm:text-3xl">SQL Compiler</h1>
+              <p className="max-w-2xl text-sm leading-6 text-secondary">
+                Write, validate, and refine SQL queries , just to check valid syntax.
+              </p>
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-primary sm:text-3xl">SQL Compiler Playground</h1>
-            <p className="max-w-2xl text-sm text-secondary">
-              Write SQL, run a fast syntax pass, and review compiler-style errors, warnings, and execution notes in one place.
-            </p>
+            <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-secondary">
+              <span className="rounded-full border border-primary/10 bg-background/70 px-3 py-1">{dialect.toUpperCase()}</span>
+              <span className="rounded-full border border-primary/10 bg-background/70 px-3 py-1">{sql.split('\n').length} lines</span>
+              <span className="rounded-full border border-primary/10 bg-background/70 px-3 py-1">{analysis.statementCount} statements</span>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-secondary">
-            <span className="rounded-full border border-primary/10 bg-surface px-3 py-1">{dialect.toUpperCase()}</span>
-            <span className="rounded-full border border-primary/10 bg-surface px-3 py-1">{sql.split('\n').length} lines</span>
-            <span className="rounded-full border border-primary/10 bg-surface px-3 py-1">{analysis.statementCount} statements</span>
-          </div>
-        </div>
+        </section>
 
         <div className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_minmax(340px,0.8fr)]">
-          <Card padding="none" className="overflow-hidden">
-            <div className="flex items-center justify-between border-b border-primary/10 bg-surface/80 px-4 py-3">
+          <Card padding="none" className="overflow-hidden border-primary/10 shadow-xl shadow-primary/5">
+            <div className="flex items-center justify-between border-b border-primary/10 bg-surface/90 px-4 py-3">
               <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-secondary">
                 <HiOutlineBolt className="h-4 w-4 text-amber-500" />
                 Editor
               </div>
               <div className="flex items-center gap-2">
-                <button type="button" onClick={copySql} className="rounded-lg border border-primary/10 bg-background/70 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:border-amber-500/40 hover:bg-background">
-                  <span className="inline-flex items-center gap-1.5"><HiOutlineClipboardDocument className="h-4 w-4 text-amber-500" />Copy</span>
+                <button type="button" onClick={copySql} className="inline-flex items-center gap-1.5 rounded-lg border border-primary/10 bg-background/70 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:border-amber-500/40 hover:bg-background">
+                  <HiOutlineClipboardDocument className="h-4 w-4 text-amber-500" />
+                  Copy
                 </button>
-                <button type="button" onClick={clearEditor} className="rounded-lg border border-primary/10 bg-background/70 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:border-amber-500/40 hover:bg-background">
-                  <span className="inline-flex items-center gap-1.5"><HiOutlineTrash className="h-4 w-4 text-amber-500" />Clear</span>
+                <button type="button" onClick={clearEditor} className="inline-flex items-center gap-1.5 rounded-lg border border-primary/10 bg-background/70 px-3 py-1.5 text-xs font-medium text-primary transition-colors hover:border-amber-500/40 hover:bg-background">
+                  <HiOutlineTrash className="h-4 w-4 text-amber-500" />
+                  Clear
                 </button>
-                <button type="button" onClick={runSql} className="rounded-lg bg-primary px-4 py-1.5 text-xs font-semibold text-background shadow-sm transition-transform hover:scale-[1.01]">
-                  <span className="inline-flex items-center gap-1.5"><HiOutlinePlay className="h-4 w-4" />Run SQL</span>
+                <button type="button" onClick={runSql} className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-1.5 text-xs font-semibold text-background shadow-sm shadow-primary/10 transition-transform hover:scale-[1.01]">
+                  <HiOutlinePlay className="h-4 w-4" />
+                  Run SQL
                 </button>
               </div>
             </div>
 
-            <div className="border-b border-primary/10 bg-background/40 px-4 py-3">
-              <div className="flex flex-wrap gap-2">
-                {SAMPLE_QUERIES.map((sample) => (
-                  <button
-                    key={sample.label}
-                    type="button"
-                    onClick={() => loadSample(sample.sql)}
-                    className="rounded-full border border-primary/10 bg-surface px-3 py-1 text-[11px] font-medium text-secondary transition-colors hover:border-amber-500/40 hover:text-primary"
-                  >
-                    {sample.label}
-                  </button>
-                ))}
+            <div className="border-b border-primary/10 bg-background/30 px-4 py-3">
+              <div className="rounded-2xl border border-dashed border-primary/10 bg-surface/80 px-4 py-3">
+                <p className="font-mono text-[11px] font-bold uppercase tracking-widest text-secondary">
+                  Validation Area
+                </p>
+                <p className="mt-1 text-sm leading-6 text-secondary">
+                  Type your SQL in the editor, then run it to check syntax validity, missing semicolons, and bracket balance.
+                </p>
               </div>
             </div>
 
-            <div className="bg-[#0e1117] p-4">
-              <div className="mb-3 flex items-center justify-between text-[11px] font-mono text-white/50">
-                <span>main.sql</span>
+            <div className="bg-surface p-4">
+              <div className="mb-3 flex items-center justify-between text-[11px] font-mono text-secondary/80">
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                  main.sql
+                </span>
                 <span>{lastRunAt ? `Last run ${lastRunAt}` : 'Ready to execute'}</span>
               </div>
-              <textarea
-                ref={editorRef}
-                value={sql}
-                onChange={(e) => setSql(e.target.value)}
-                onKeyDown={handleEditorKeyDown}
-                spellCheck={false}
-                className="min-h-130 w-full resize-y rounded-xl border border-white/10 bg-[#0b0f14] px-4 py-4 font-mono text-sm leading-6 text-emerald-200 outline-none placeholder:text-white/30 focus:border-amber-500/50"
-                placeholder="Write SQL here..."
-              />
+              <div className="flex min-h-130 overflow-hidden rounded-2xl border border-primary/10 bg-background/80 focus-within:border-amber-500/50 focus-within:ring-4 focus-within:ring-amber-500/10">
+                <div
+                  ref={lineNumberRef}
+                  className="select-none border-r border-primary/10 bg-surface/80 px-3 py-4 font-mono text-xs leading-6 text-secondary/60 overflow-hidden"
+                  aria-hidden="true"
+                >
+                  {lineNumbers.map((lineNumber) => (
+                    <div key={lineNumber} className="h-6 text-right tabular-nums">
+                      {lineNumber}
+                    </div>
+                  ))}
+                </div>
+                <textarea
+                  ref={editorRef}
+                  value={sql}
+                  onChange={(e) => setSql(e.target.value)}
+                  onKeyDown={handleEditorKeyDown}
+                  onScroll={handleEditorScroll}
+                  spellCheck={false}
+                  className="min-h-130 flex-1 resize-y bg-transparent px-4 py-4 font-mono text-sm leading-6 text-primary outline-none placeholder:text-secondary/50 overflow-auto"
+                  placeholder="Write SQL here..."
+                />
+              </div>
             </div>
           </Card>
 

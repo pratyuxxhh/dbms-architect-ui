@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import Playground from './pages/Playground'
+import Profile from './pages/Profile'
 import GeneratingSchema from './pages/GeneratingSchema'
 import ProtectedRoute from './ProtectedRoute'
 
@@ -34,6 +35,7 @@ function AppShell() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/playground" element={<Playground />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/generating-schema" element={<GeneratingSchema />} />
         </Route>
       </Routes>
