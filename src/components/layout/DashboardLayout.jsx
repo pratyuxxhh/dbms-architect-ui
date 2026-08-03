@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import MainContent from './MainContent'
@@ -16,6 +17,8 @@ export default function DashboardLayout({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [selectedHistoryItem, setSelectedHistoryItem] = useState(null)
+  const { pathname } = useLocation()
+  const isPlayground = pathname === '/playground'
   const {
     sidebarWidth,
     inspectorWidth,
@@ -78,7 +81,7 @@ export default function DashboardLayout({
       <div
         style={{
           paddingLeft: isDesktop ? `${sidebarWidth}px` : '0px',
-          paddingRight: isDesktop && isInspectorOpen ? `${inspectorWidth}px` : '0px',
+          paddingRight: isDesktop && isInspectorOpen && !isPlayground ? `${inspectorWidth}px` : '0px',
         }}
         className="flex-1 flex flex-col min-h-screen transition-all duration-150 min-w-0"
       >
