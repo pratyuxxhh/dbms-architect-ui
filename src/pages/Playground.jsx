@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import {
   HiOutlineCommandLine,
   HiOutlinePlay,
@@ -109,6 +109,7 @@ function buildDiagnostics(sql) {
 }
 
 export default function Playground() {
+  const editorRef = useRef(null)
   const [sql, setSql] = useState(DEFAULT_SQL)
   const [dialect, setDialect] = useState('postgresql')
   const [runMode, setRunMode] = useState('idle')
@@ -164,6 +165,26 @@ export default function Playground() {
     } catch {
       toast.error('Failed to copy SQL.')
     }
+  }
+
+  const handleEditorKeyDown = (event) => {
+    if (event.key !== 'Tab') return
+
+    event.preventDefault()
+    const textarea = editorRef.current
+    if (!textarea) return
+
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const tabSize = '  '
+    const nextValue = `${sql.slice(0, start)}${tabSize}${sql.slice(end)}`
+
+    setSql(nextValue)
+
+    queueMicrotask(() => {
+      textarea.focus()
+      textarea.setSelectionRange(start + tabSize.length, start + tabSize.length)
+    })
   }
 
   return (
@@ -228,8 +249,10 @@ export default function Playground() {
                 <span>{lastRunAt ? `Last run ${lastRunAt}` : 'Ready to execute'}</span>
               </div>
               <textarea
+                ref={editorRef}
                 value={sql}
                 onChange={(e) => setSql(e.target.value)}
+                onKeyDown={handleEditorKeyDown}
                 spellCheck={false}
                 className="min-h-130 w-full resize-y rounded-xl border border-white/10 bg-[#0b0f14] px-4 py-4 font-mono text-sm leading-6 text-emerald-200 outline-none placeholder:text-white/30 focus:border-amber-500/50"
                 placeholder="Write SQL here..."
