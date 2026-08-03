@@ -3,13 +3,16 @@ import {
   HiOutlineUserCircle,
   HiOutlineKey,
   HiOutlineTrash,
-  HiOutlineArrowPath,
   HiOutlineCheckBadge,
   HiOutlineBolt,
 } from 'react-icons/hi2'
 import { toast } from 'react-toastify'
 import Card from '../components/common/Card'
 import DashboardLayout from '../components/layout/DashboardLayout'
+import {
+  getStoredUserProfile,
+  saveUserProfile,
+} from '../utils/userProfile'
 
 const PLAN_OPTIONS = [
   {
@@ -37,43 +40,57 @@ function getStoredValue(key, fallback) {
 }
 
 export default function Profile() {
-  const [profile, setProfile] = useState(() => ({
-    id: getStoredValue('userId', '66f4c8e9d5b12a7e9f1a3c11'),
-    username: getStoredValue('username', 'Developer'),
-    firstName: getStoredValue('firstName', 'Dev'),
-    lastName: getStoredValue('lastName', 'User'),
-    role: 'USER',
-    plan: 'pro',
-    totalTokenUsed: 12840,
-    inputTokens: 7820,
-    outputTokens: 5020,
-    history: ['schema_studio_v2.sql', 'orders_schema.sql', 'billing_schema.sql'],
-    userPrompts: [
-      'Create a SaaS billing schema with invoices and subscriptions.',
-      'Generate an ecommerce schema with products, carts, and orders.',
-    ],
-    createdAt: '2026-01-18T10:42:00',
-    updatedAt: '2026-08-02T14:05:00',
-    password: '********',
-  }))
+  const [profile, setProfile] = useState(() => {
+    const storedProfile = getStoredUserProfile()
+
+    return storedProfile || {
+      id: getStoredValue('userId', '66f4c8e9d5b12a7e9f1a3c11'),
+      username: getStoredValue('username', 'Developer'),
+      firstName: getStoredValue('firstName', 'Dev'),
+      lastName: getStoredValue('lastName', 'User'),
+      role: 'USER',
+      plan: 'pro',
+      totalTokenUsed: 12840,
+      inputTokens: 7820,
+      outputTokens: 5020,
+      history: ['schema_studio_v2.sql', 'orders_schema.sql', 'billing_schema.sql'],
+      userPrompts: [
+        'Create a SaaS billing schema with invoices and subscriptions.',
+        'Generate an ecommerce schema with products, carts, and orders.',
+      ],
+      createdAt: '2026-01-18T10:42:00',
+      updatedAt: '2026-08-02T14:05:00',
+      password: '********',
+    }
+  })
 
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isLoadingProfile, setIsLoadingProfile] = useState(false)
 
   const fullName = useMemo(
     () => `${profile.firstName} ${profile.lastName}`.trim() || profile.username,
     [profile.firstName, profile.lastName, profile.username]
   )
 
-  const updateUserId = () => {
-    const nextId = window.prompt('Enter a new ObjectId value for the account id:', profile.id)
-    if (!nextId || !nextId.trim()) return
+  const fetchUserProfile = async () => {
+    if (isLoadingProfile) return
 
-    setProfile((prev) => ({
-      ...prev,
-      id: nextId.trim(),
-      updatedAt: new Date().toISOString().slice(0, 19),
-    }))
-    toast.success('User id updated locally.')
+    setIsLoadingProfile(true)
+    try {
+      const storedProfile = getStoredUserProfile()
+      if (!storedProfile) {
+        toast.error('No stored profile found. Use the topbar profile button first.')
+        return
+      }
+
+      setProfile(storedProfile)
+      toast.success('Profile loaded from local storage.')
+    } catch (err) {
+      console.error('Failed to load stored user profile:', err)
+      toast.error('Failed to load user profile.')
+    } finally {
+      setIsLoadingProfile(false)
+    }
   }
 
   const deleteUserId = () => {
@@ -82,22 +99,28 @@ export default function Profile() {
 
     setIsDeleting(true)
     setTimeout(() => {
-      setProfile((prev) => ({
-        ...prev,
+      const nextProfile = {
+        ...profile,
         id: 'deleted',
         updatedAt: new Date().toISOString().slice(0, 19),
-      }))
+      }
+
+      setProfile(nextProfile)
+      saveUserProfile(nextProfile)
       setIsDeleting(false)
       toast.info('User id deleted in the local profile view.')
     }, 300)
   }
 
   const changePlan = (planId) => {
-    setProfile((prev) => ({
-      ...prev,
+    const nextProfile = {
+      ...profile,
       plan: planId,
       updatedAt: new Date().toISOString().slice(0, 19),
-    }))
+    }
+
+    setProfile(nextProfile)
+    saveUserProfile(nextProfile)
     toast.success(`Plan changed to ${planId.toUpperCase()}.`)
   }
 
@@ -151,7 +174,6 @@ export default function Profile() {
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {[
                   { label: 'username', value: profile.username },
-                  { label: 'password', value: profile.password },
                   { label: 'firstName', value: profile.firstName },
                   { label: 'lastName', value: profile.lastName },
                   { label: 'role', value: profile.role },
@@ -222,17 +244,7 @@ export default function Profile() {
               </div>
 
               <div className="mt-4 space-y-3">
-                <button
-                  type="button"
-                  onClick={updateUserId}
-                  className="flex w-full items-center justify-between rounded-xl border border-primary/10 bg-background/60 px-4 py-3 text-left transition-colors hover:border-amber-500/40 hover:bg-background"
-                >
-                  <span>
-                    <span className="block text-sm font-semibold text-primary">Update ID</span>
-                    </span>
-                  <HiOutlineArrowPath className="h-5 w-5 text-amber-500" />
-                </button>
-
+                
                 <button
                   type="button"
                   onClick={deleteUserId}

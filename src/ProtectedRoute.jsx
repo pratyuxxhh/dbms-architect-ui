@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { clearUserProfile } from './utils/userProfile';
 
 const API_URL = import.meta.env.VITE_API_URL;
 function ProtectedRoute() {
@@ -29,6 +30,7 @@ function ProtectedRoute() {
         } else {
           setAuthenticated(false);
           localStorage.removeItem("token");
+          clearUserProfile();
         }
       } catch (error) {
         console.error(error);
