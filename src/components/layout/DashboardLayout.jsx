@@ -87,15 +87,17 @@ export default function DashboardLayout({
           onToggleInspector={toggleInspector}
           isInspectorOpen={isInspectorOpen}
         />
-        {selectedHistoryItem ? (
-          <HistoryFile
-            filename={selectedHistoryItem.filename}
-            content={selectedHistoryItem.content}
-            onClose={() => setSelectedHistoryItem(null)}
-          />
-        ) : (
-          <MainContent>{children}</MainContent>
-        )}
+        <MainContent>
+          {selectedHistoryItem ? (
+            <HistoryFile
+              filename={selectedHistoryItem.filename}
+              content={selectedHistoryItem.content}
+              onClose={() => setSelectedHistoryItem(null)}
+            />
+          ) : (
+            children
+          )}
+        </MainContent>
       </div>
 
       {/* Resizable Handle 2: Right Inspector Drag Border (Desktop) */}

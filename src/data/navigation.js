@@ -2,7 +2,6 @@ import {
   HiOutlineSquares2X2,
   HiOutlineBookOpen,
   HiOutlineCog6Tooth,
-  HiOutlineUser,
 } from 'react-icons/hi2'
 
 export const authNavigation = [

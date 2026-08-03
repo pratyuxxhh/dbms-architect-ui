@@ -87,7 +87,9 @@ export default function Sidebar({ isOpen, onClose, width = 260, onSelectHistoryI
   }, [])
 
   useEffect(() => {
-    fetchHistory()
+    queueMicrotask(() => {
+      fetchHistory()
+    })
   }, [fetchHistory])
 
   const filteredHistory = historyItems.filter((item) =>
@@ -194,24 +196,24 @@ export default function Sidebar({ isOpen, onClose, width = 260, onSelectHistoryI
               </div>
             ) : filteredHistory.length > 0 ? (
               filteredHistory.map((item) => (
-                <button
-                  key={item.filename}
-                  type="button"
-                  onClick={() => {
-                    if (onSelectHistoryItem) {
-                      onSelectHistoryItem({ filename: item.filename, content: item.content })
-                    }
-                    if (onClose) onClose()
-                  }}
-                  className="w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-xs transition-colors hover:bg-background/80 group"
-                >
+                  <button
+                    key={item.filename}
+                    type="button"
+                    onClick={() => {
+                      if (onSelectHistoryItem) {
+                        onSelectHistoryItem({ filename: item.filename, content: item.content })
+                      }
+                      if (onClose) onClose()
+                    }}
+                    className="w-full flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-xs transition-colors hover:bg-background/80 group"
+                  >
                   <HiOutlineDocumentText className="h-4 w-4 shrink-0 text-amber-500 group-hover:scale-110 transition-transform" />
                   <div className="min-w-0 flex-1">
                     <p className="font-mono text-[11px] font-medium text-primary truncate group-hover:text-amber-600 transition-colors">
                       {item.filename}
                     </p>
                   </div>
-                </button>
+                  </button>
               ))
             ) : (
               <div className="px-2 py-4 text-center text-xs text-secondary/70">

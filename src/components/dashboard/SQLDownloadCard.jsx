@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
   HiOutlineDocumentText,
-  HiOutlineArrowDownTray,
   HiOutlineClipboardDocumentCheck,
   HiOutlineEye,
   HiOutlineArrowPath,
@@ -31,8 +30,10 @@ export default function SQLDownloadCard({
         setPreviewText('-- SQL script ready for download')
       })
     } else {
-      setPreviewText('')
-      setShowPreview(false)
+      Promise.resolve().then(() => {
+        setPreviewText('')
+        setShowPreview(false)
+      })
     }
   }, [blob])
 

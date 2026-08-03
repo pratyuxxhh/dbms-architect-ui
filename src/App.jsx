@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
+import Playground from './pages/Playground'
 import GeneratingSchema from './pages/GeneratingSchema'
 import ProtectedRoute from './ProtectedRoute'
 
@@ -33,6 +33,7 @@ function AppShell() {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/playground" element={<Playground />} />
           <Route path="/generating-schema" element={<GeneratingSchema />} />
         </Route>
       </Routes>
