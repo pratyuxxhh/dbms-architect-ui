@@ -72,26 +72,7 @@ export default function Profile() {
     [profile.firstName, profile.lastName, profile.username]
   )
 
-  const fetchUserProfile = async () => {
-    if (isLoadingProfile) return
-
-    setIsLoadingProfile(true)
-    try {
-      const storedProfile = getStoredUserProfile()
-      if (!storedProfile) {
-        toast.error('No stored profile found. Use the topbar profile button first.')
-        return
-      }
-
-      setProfile(storedProfile)
-      toast.success('Profile loaded from local storage.')
-    } catch (err) {
-      console.error('Failed to load stored user profile:', err)
-      toast.error('Failed to load user profile.')
-    } finally {
-      setIsLoadingProfile(false)
-    }
-  }
+  
 
   const deleteUserId = () => {
     const confirmed = window.confirm('Delete this user id from the local profile view?')
