@@ -36,15 +36,13 @@ const STATS = [
 const DIALECT_BADGES = [
   { name: 'PostgreSQL', tag: 'PG 16+' },
   { name: 'MySQL', tag: '8.0+' },
-  { name: 'SQLite', tag: '3.40+' },
-  { name: 'Supabase', tag: 'RLS Ready' },
-  { name: 'Prisma Schema', tag: 'ORM' },
+  { name: 'Microsoft SQL Server', tag: '2022+' },
   { name: 'Oracle SQL', tag: 'Enterprise' }
 ]
 
 export default function MetricsBar() {
   return (
-    <section className="py-10 sm:py-16 bg-surface/50 border-y border-primary/10 relative">
+    <section className="py-10 z-0sm:py-16 bg-surface/50 border-y border-primary/10 relative">
       <Container>
         {/* Statistics Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">

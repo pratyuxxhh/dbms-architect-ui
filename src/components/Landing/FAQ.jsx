@@ -5,7 +5,7 @@ import { HiOutlineChevronDown } from 'react-icons/hi2'
 const FAQS = [
   {
     question: 'Which SQL database dialects are currently supported?',
-    answer: 'DBMS Architect supports PostgreSQL, MySQL 8.0+, SQLite 3, and Supabase (with Row-Level Security policies). You can switch between dialects with a single click in the studio preview or download dialect-specific .sql scripts.'
+    answer: 'DBMS Architect supports PostgreSQL, MySQL 8.0+, Oracle SQL, and Microsoft SQL Server. You can switch between dialects with a single click in the studio preview or download dialect-specific .sql scripts.'
   },
   {
     question: 'How does the AI ensure 3NF (Third Normal Form) compliance?',

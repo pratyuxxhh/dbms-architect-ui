@@ -10,12 +10,10 @@ export default function HeroBadge() {
           aria-hidden="true"
         />
         <span className="text-[11px] font-semibold tracking-wide text-primary sm:text-sm">
-          Next-Gen AI Database Architect v2.0
+          Next-Gen AI Database Architect
         </span>
       </div>
-      <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-bold text-primary">
-        3NF & DDL
-      </span>
+      
     </div>
   )
 }
