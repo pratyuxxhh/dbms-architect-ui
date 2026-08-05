@@ -1,13 +1,13 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import { HiOutlineBars3, HiOutlineAdjustmentsHorizontal, HiOutlineUserCircle } from 'react-icons/hi2'
+import { HiOutlineBars3, HiOutlineUserCircle } from 'react-icons/hi2'
 import { toast } from 'react-toastify'
 import { cn } from '../../utils/cn'
 import { mapUserEntityToProfile, saveUserProfile } from '../../utils/userProfile'
 
 const API_URL = import.meta.env.VITE_API_URL
 
-export default function Topbar({ onMenuClick, onToggleInspector, isInspectorOpen }) {
+export default function Topbar({ onMenuClick }) {
   const username = localStorage.getItem('username') || 'Developer'
   const [isLoadingProfile, setIsLoadingProfile] = useState(false)
   const navigate = useNavigate()
@@ -102,21 +102,6 @@ export default function Topbar({ onMenuClick, onToggleInspector, isInspectorOpen
           <span className="hidden md:inline">{isLoadingProfile ? 'Loading...' : username}</span>
         </button>
 
-        {/* Inspector Toggle Button */}
-        <button
-          type="button"
-          onClick={onToggleInspector}
-          className={cn(
-            'inline-flex h-9 items-center gap-2 rounded-lg border px-3 text-xs font-mono font-medium transition-all',
-            isInspectorOpen
-              ? 'border-amber-500/40 bg-amber-500/10 text-primary shadow-xs'
-              : 'border-primary/15 bg-background/60 text-secondary hover:bg-background/90 hover:text-primary'
-          )}
-          title="Toggle Inspector Panel (Ctrl+B)"
-        >
-          <HiOutlineAdjustmentsHorizontal className="h-4 w-4 text-amber-500" />
-          <span className="hidden sm:inline">Inspector</span>
-        </button>
       </div>
     </header>
   )

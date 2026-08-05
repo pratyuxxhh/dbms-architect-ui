@@ -24,8 +24,9 @@ export default function Dashboard() {
 
     try {
       const token = localStorage.getItem('token')
+      console.log( 'url: ', `${API_URL}/ai/download?m=${encodeURIComponent(trimmedPrompt)}&dialect=${encodeURIComponent(selectedDialect)}` )
       const response = await fetch(
-        `${API_URL}/ai/download?m=${encodeURIComponent(trimmedPrompt)}`,
+        `${API_URL}/ai/download?m=${encodeURIComponent(trimmedPrompt)}&dialect=${encodeURIComponent(selectedDialect)}`,
         {
           method: 'GET',
           headers: {
@@ -81,6 +82,8 @@ export default function Dashboard() {
           prompt={prompt}
           onChange={setPrompt}
           onSubmit={handleGenerateSQL}
+          selectedDialect={selectedDialect}
+          onSelectDialect={setSelectedDialect}
           loading={loading}
         />
 

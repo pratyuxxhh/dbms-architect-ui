@@ -2,11 +2,19 @@ import { useState, useRef, useEffect } from 'react'
 import {
   HiOutlineSparkles,
   HiOutlineCommandLine,
+  HiOutlineChevronDown,
   HiOutlineArrowRight,
 } from 'react-icons/hi2'
 import Button from '../common/Button'
 import LoadingSpinner from './LoadingSpinner'
 import { cn } from '../../utils/cn'
+
+const DIALECT_OPTIONS = [
+  { id: 'postgresql', name: 'PostgreSQL' },
+  { id: 'mysql', name: 'MySQL' },
+  { id: 'microsoft_sql', name: 'Microsoft SQL Server' },
+  { id: 'oracle_database', name: 'Oracle Database' },
+]
 
 const TEMPLATE_PROMPTS = [
   {
@@ -55,6 +63,8 @@ export default function PromptInput({
   prompt,
   onChange,
   onSubmit,
+  selectedDialect,
+  onSelectDialect,
   loading = false,
   disabled = false,
 }) {
@@ -79,6 +89,12 @@ export default function PromptInput({
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault()
       handleSubmit(e)
+    }
+  }
+
+  const handleDialectChange = (event) => {
+    if (onSelectDialect) {
+      onSelectDialect(event.target.value)
     }
   }
 
@@ -142,7 +158,7 @@ export default function PromptInput({
         />
 
         {/* Editor Controls Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-3 border-t border-primary/10 mt-2 font-mono text-xs">
+        <div className="flex flex-col gap-3 pt-3 border-t border-primary/10 mt-2 font-mono text-xs sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3 text-secondary text-[11px]">
             <span>{prompt.length} / 2000 chars</span>
             <span>•</span>
@@ -152,26 +168,49 @@ export default function PromptInput({
             </span>
           </div>
 
-          <Button
-            type="button"
-            onClick={handleSubmit}
-            variant="primary"
-            disabled={isButtonDisabled}
-            loading={false}
-            className="h-9 px-4 text-xs font-bold shadow-md shadow-primary/10 hover:shadow-lg transition-all self-end sm:self-auto w-full sm:w-auto"
-          >
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <LoadingSpinner className="h-3.5 w-3.5" />
-                <span>Generating Schema...</span>
-              </span>
-            ) : (
-              <span className="flex items-center justify-center gap-1.5">
-                <span>Generate SQL</span>
-                <HiOutlineArrowRight className="h-3.5 w-3.5" />
-              </span>
-            )}
-          </Button>
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
+            <div className="relative w-full sm:w-52">
+              <select
+                value={selectedDialect || 'postgresql'}
+                onChange={handleDialectChange}
+                disabled={disabled || loading}
+                aria-label="Select SQL dialect"
+                className={cn(
+                  'h-9 w-full appearance-none rounded-2xl border bg-background/80 px-3 pr-9 text-xs font-semibold text-primary outline-none transition-colors',
+                  'border-primary/15 hover:border-amber-500/40 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/15',
+                  'disabled:cursor-not-allowed disabled:opacity-60'
+                )}
+              >
+                {DIALECT_OPTIONS.map((dialect) => (
+                  <option key={dialect.id} value={dialect.id}>
+                    {dialect.name}
+                  </option>
+                ))}
+              </select>
+              <HiOutlineChevronDown className="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-secondary" />
+            </div>
+
+            <Button
+              type="button"
+              onClick={handleSubmit}
+              variant="primary"
+              disabled={isButtonDisabled}
+              loading={false}
+              className="h-9 w-full px-4 text-xs font-bold shadow-md shadow-primary/10 transition-all hover:shadow-lg sm:w-auto"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <LoadingSpinner className="h-3.5 w-3.5" />
+                  <span>Generating Schema...</span>
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-1.5">
+                  <span>Generate SQL</span>
+                  <HiOutlineArrowRight className="h-3.5 w-3.5" />
+                </span>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
     </div>

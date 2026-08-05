@@ -48,7 +48,7 @@ export default function LoginCard() {
 
     if (!validate()) return;
 
-    const toastId = toast.loading('The backend might take 1 minute to start...')
+    const toastId = toast.loading('The backend might take a minute to start...')
 
     setLoading(true);
 

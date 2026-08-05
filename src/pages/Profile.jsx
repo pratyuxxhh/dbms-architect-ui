@@ -160,7 +160,6 @@ export default function Profile() {
                   { label: 'inputTokens', value: profile.inputTokens.toLocaleString() },
                   { label: 'outputTokens', value: profile.outputTokens.toLocaleString() },
                   { label: 'history', value: `${profile.history.length} saved files` },
-                  { label: 'userPrompts', value: `${profile.userPrompts.length} prompts` },
                   { label: 'updatedAt', value: profile.updatedAt },
                 ].map((item) => (
                   <div key={item.label} className="rounded-xl border border-primary/10 bg-background/60 p-3">
