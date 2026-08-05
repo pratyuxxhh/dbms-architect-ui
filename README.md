@@ -4,6 +4,8 @@
 
 ### Turn plain English into production-ready SQL database schemas — instantly.
 
+Live demo: [https://dbms-architect-ui.vercel.app/](https://dbms-architect-ui.vercel.app/)
+
 DBMS Architect is an AI-powered platform that converts natural language prompts into normalized, production-ready relational database schemas, tailored to your target SQL engine.
 
 <p>
@@ -104,6 +106,10 @@ Designing a relational database from scratch is time-consuming — modeling enti
 
 ![MySQL Demo](docs/gifs/mysql-generation.gif)
 
+> Demo videos included in this repository:
+> - `public/dbms-architect.mp4` — website tour
+> - `public/sql-example.mp4` — generated SQL usage example
+
 ---
 
 ## 🔄 Project Workflow
@@ -164,18 +170,19 @@ flowchart TD
 
 **AI**
 - LLM-powered SQL generation
+- Model: `gpt-5.4-nano`
 
 </td>
 <td valign="top" width="25%">
 
 **Database**
-- PostgreSQL *(default)*
+- MongoDB Atlas
 
 </td>
 </tr>
 </table>
 
-**Deployment:** `<!-- TODO: e.g. Docker, AWS, Vercel, Render -->`
+**Deployment:** frontend hosted on Vercel, backend hosted on Render, database hosted on MongoDB Atlas
 
 ---
 
@@ -266,6 +273,8 @@ Frontend will start on `http://localhost:5173` *(default)*.
 
 > [!NOTE]
 > Configure your database credentials and LLM API key in `backend/src/main/resources/application.properties` (or `.env` for the frontend) before running.
+>
+> This project is deployed with the frontend on Vercel, backend on Render, and the database on MongoDB Atlas.
 
 ---
 
