@@ -100,17 +100,11 @@ Designing a relational database from scratch is time-consuming — modeling enti
 
 ### Website Tour
 
-<video controls width="720" preload="metadata">
-  <source src="public/dbms-architect.mp4" type="video/mp4">
-  Your browser does not support the video tag. You can download it directly: [dbms-architect.mp4](public/dbms-architect.mp4)
-</video>
+![Website Tour](public/tour.gif)
 
 ### MySQL Schema Generation Demo
 
-<video controls width="720" preload="metadata">
-  <source src="public/sql-example.mp4" type="video/mp4">
-  Your browser does not support the video tag. You can download it directly: [sql-example.mp4](public/sql-example.mp4)
-</video>
+![MySQL Demo](public/sql-example.gif)
 
 ---
 
