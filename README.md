@@ -100,11 +100,17 @@ Designing a relational database from scratch is time-consuming — modeling enti
 
 ### Website Tour
 
-![Website Tour](public/dbms-architect.mp4)
+<video controls width="720" preload="metadata">
+  <source src="public/dbms-architect.mp4" type="video/mp4">
+  Your browser does not support the video tag. You can download it directly: [dbms-architect.mp4](public/dbms-architect.mp4)
+</video>
 
 ### MySQL Schema Generation Demo
 
-![MySQL Demo](public/sql-example.mp4)
+<video controls width="720" preload="metadata">
+  <source src="public/sql-example.mp4" type="video/mp4">
+  Your browser does not support the video tag. You can download it directly: [sql-example.mp4](public/sql-example.mp4)
+</video>
 
 ---
 
@@ -165,7 +171,6 @@ flowchart TD
 <td valign="top" width="25%">
 
 **AI**
-- LLM-powered SQL generation
 - Model: `gpt-5.4-nano`
 
 </td>
@@ -342,10 +347,9 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 **Your Name**
 
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/your-username)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/your-profile)
-[![Portfolio](https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://your-portfolio.com)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:your.email@example.com)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/pratyuxxhh)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/pratyush-parashar-134a7930b/)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:pratyuxxhh@gmail.com)
 
 </div>
 
