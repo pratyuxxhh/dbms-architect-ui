@@ -290,17 +290,13 @@ Design a hospital management system with patients, doctors, appointments, billin
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Up Coming features
 
 - [ ] Free / Standard / Pro subscription plans
 - [ ] Razorpay payment integration
-- [ ] User authentication
-- [ ] Saved projects
-- [ ] Project history
 - [ ] Continued AI model improvements
 - [ ] Support for additional SQL dialects
 - [ ] Visual schema diagrams
-- [ ] Export database diagrams (PNG / PDF)
 - [ ] Team collaboration features
 
 ---
