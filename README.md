@@ -100,15 +100,11 @@ Designing a relational database from scratch is time-consuming — modeling enti
 
 ### Website Tour
 
-![Website Tour](docs/gifs/website-tour.gif)
+![Website Tour](public/dbms-architect.mp4)
 
 ### MySQL Schema Generation Demo
 
-![MySQL Demo](docs/gifs/mysql-generation.gif)
-
-> Demo videos included in this repository:
-> - `public/dbms-architect.mp4` — website tour
-> - `public/sql-example.mp4` — generated SQL usage example
+![MySQL Demo](public/sql-example.mp4)
 
 ---
 
